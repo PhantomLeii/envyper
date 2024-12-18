@@ -24,7 +24,7 @@ export const EnvVariableSchema = z.object({
   id: z.bigint(),
   key: z.string(),
   value: z.string(),
-  type: EnvTypeSchema,
+  envType: EnvTypeSchema.default("DEV"),
   projectId: z.bigint(),
 });
 
