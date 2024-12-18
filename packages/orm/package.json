@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "bun build --entrypoints src/index.ts --outdir dist --target node",
-    "lint": "bunx eslint src/**/*.ts",
+    "lint": "eslint src/**/*.ts",
     "format": "bunx prisma format --schema src/prisma/schema.prisma",
     "migrate": "bunx prisma migrate dev --schema src/prisma/schema.prisma",
     "generate": "bunx prisma generate --schema src/prisma/schema.prisma",
