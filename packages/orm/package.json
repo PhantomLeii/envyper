@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./projects": "./src/projects"
+    "./projects": "./src/projects",
+    "./envVars": "./src/envVars"
   },
   "scripts": {
     "build": "bun build --entrypoints src/index.ts --outdir dist --target node",
