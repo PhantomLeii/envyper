@@ -47,6 +47,7 @@ describe('Projects', () => {
     const projectRecord = await prisma.project.findFirst()
 
     expect(projectRecord).toBeTruthy()
+    expect(projectRecord?.name).toBe(testProject.name)
   })
 
   it('should get a project by id', async () => {
@@ -74,6 +75,7 @@ describe('Projects', () => {
     })
 
     expect(updatedProject?.name).toBe(record?.name as string)
+    expect(updatedProject?.description).toBe(record?.description as string)
   })
 
   it('should delete a project', async () => {
