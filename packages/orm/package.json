@@ -9,11 +9,13 @@
     "migrate": "bunx prisma migrate dev --schema src/prisma/schema.prisma",
     "generate": "bunx prisma generate --schema src/prisma/schema.prisma",
     "test": "bun test",
-    "test:watch": "bun test --watch"
+    "test:watch": "bun test --watch",
+    "install": "bun i"
   },
   "devDependencies": {
     "@envyper/eslint-config": "*",
-    "@envyper/typescript-config": "*"
+    "@envyper/typescript-config": "*",
+    "@envyper/zod": "*"
   },
   "dependencies": {
     "@prisma/client": "^6.1.0",
