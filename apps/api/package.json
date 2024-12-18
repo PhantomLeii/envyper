@@ -1,0 +1,20 @@
+{
+  "name": "@envyper/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Add dev script here'",
+    "build": "echo 'Add build script here'",
+    "test": "echo 'Add test script here'",
+    "lint": "echo 'Add lint script here'"
+  },
+  "dependencies": {
+    "@envyper/orm": "*"
+  },
+  "devDependencies": {
+    "@envyper/eslint-config": "*",
+    "@envyper/typescript-config": "*",
+    "@envyper/zod": "*"
+  }
+}
