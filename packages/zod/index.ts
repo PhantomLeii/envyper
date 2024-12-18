@@ -20,12 +20,6 @@ export const ProjectSchema = z.object({
   users: z.optional(z.array(z.bigint())),
 });
 
-// export const EnvironmentSchema = z.object({
-//   id: z.bigint(),
-//   type: EnvTypeSchema,
-//   projectId: z.bigint(),
-// });
-
 export const EnvVariableSchema = z.object({
   id: z.bigint(),
   key: z.string(),
