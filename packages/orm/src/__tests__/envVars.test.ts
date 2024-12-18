@@ -23,6 +23,12 @@ describe('Environment Variables', () => {
   }
 
   beforeAll(async () => {
+    const testUser = await prisma.user.findUnique({
+      where: {
+        userId: 'test-user'
+      }
+    })
+    
     // create test project
     const testProject: Project = await prisma.project.create({
       data: {
@@ -37,6 +43,8 @@ describe('Environment Variables', () => {
   })
 
   afterAll(async () => {
+    // remove all tables & their data & reset the auto-increment
+    await prisma.$executeRaw`TRUNCATE TABLE "EnvVariable" CASCADE`
     await prisma.$disconnect()
   })
 
@@ -77,8 +85,7 @@ describe('Environment Variables', () => {
       }
     })
 
-    expect(updatedEnvVar?.key).toBe(record?.key as string)
-    expect(updatedEnvVar?.value).toBe(record?.value as string)
+    expect(updatedEnvVar).toMatchObject(record as EnvVariable)
   })
 
   it('should delete an environment variable', async () => {

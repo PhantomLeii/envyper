@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from 'bun:test'
 import { PrismaClient } from '@prisma/client'
-import { execSync } from 'child_process'
+import type { CreateProject, Project, User } from '@envyper/zod'
 
 import {
 getProjects,
@@ -9,12 +9,12 @@ createProject,
 updateProject,
 deleteProject,
 } from '../projects'
-import type { CreateProject, Project, User } from '@envyper/zod'
 
 const prisma = new PrismaClient()
 
 describe('Projects', () => {
-  let testUserId: bigint, projectId: bigint;
+  let testUserId: bigint,
+      projectId: bigint;
 
   const testProject: CreateProject = {
     name: 'Test Project',
@@ -23,6 +23,8 @@ describe('Projects', () => {
   }
   
   beforeAll(async () => {
+    await prisma.$connect()
+    
     // get test user
     const testUser: User | null = await prisma.user.findUnique({
       where: {
