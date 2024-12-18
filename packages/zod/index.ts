@@ -33,14 +33,19 @@ export const EnvVariableSchema = z.object({
   environmentId: z.bigint(),
 });
 
-// Types
-export type User = z.infer<typeof UserSchema>;
-export type Project = z.infer<typeof ProjectSchema>;
-export type Environment = z.infer<typeof EnvironmentSchema>;
-export type EnvVariable = z.infer<typeof EnvVariableSchema>;
 
 // Create input schemas
 export const CreateUserSchema = UserSchema.omit({ id: true, createdAt: true });
 export const CreateProjectSchema = ProjectSchema.omit({ id: true, createdAt: true });
 export const CreateEnvironmentSchema = EnvironmentSchema.omit({ id: true });
 export const CreateEnvVariableSchema = EnvVariableSchema.omit({ id: true });
+
+// Types
+export type User = z.infer<typeof UserSchema>;
+export type Project = z.infer<typeof ProjectSchema>;
+export type Environment = z.infer<typeof EnvironmentSchema>;
+export type EnvVariable = z.infer<typeof EnvVariableSchema>;
+export type CreateUser = z.infer<typeof CreateUserSchema>;
+export type CreateProject = z.infer<typeof CreateProjectSchema>;
+export type CreateEnvironment = z.infer<typeof CreateEnvironmentSchema>;
+export type CreateEnvVariable = z.infer<typeof CreateEnvVariableSchema>;
