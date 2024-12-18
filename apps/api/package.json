@@ -5,9 +5,9 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "echo 'Add dev script here'",
-    "build": "echo 'Add build script here'",
-    "test": "echo 'Add test script here'",
+    "dev": "bun src/index.ts --watch",
+    "build": "bun build --entrypoints src/index.ts --outdir dist --target node",
+    "test": "bun test",
     "lint": "eslint src/**/*.ts"
   },
   "dependencies": {
