@@ -9,25 +9,28 @@ createProject,
 updateProject,
 deleteProject,
 } from '../projects'
+import type { CreateProject, Project, User } from '@envyper/zod'
 
 const prisma = new PrismaClient()
 
 describe('Projects', () => {
-  let testUserId: bigint
+  let testUserId: bigint, projectId: bigint;
 
+  const testProject: CreateProject = {
+    name: 'Test Project',
+    description: 'Test Description',
+    creatorId: BigInt(1)
+  }
   
   beforeAll(async () => {
-    execSync('bunx prisma migrate reset --schema src/prisma/schema.prisma --force')
-    await prisma.$connect()
-
-    // create test user
-    const testUser = await prisma.user.create({
-      data: {
+    // get test user
+    const testUser: User | null = await prisma.user.findUnique({
+      where: {
         userId: 'test-user'
       }
     })
 
-    testUserId = testUser.id
+    testUserId = testUser?.id as bigint
   })
 
   afterAll(async () => {
@@ -35,52 +38,50 @@ describe('Projects', () => {
   })
 
   it('should create a project', async () => {
-    const project = await createProject({
-      name: 'Test Project',
-      description: 'Test Description',
-      creatorId: testUserId,
-    })
+    const newProject = await createProject(testProject)
 
-    const newProject = await prisma.project.findUnique({
-      where: {
-        id: 1
-      }
-    })
+    if (newProject) {
+      projectId = newProject.id
+    }
+    
+    const projectRecord = await prisma.project.findFirst()
 
-    expect(newProject).toBeDefined()
+    expect(projectRecord).toBeTruthy()
   })
 
   it('should get a project by id', async () => {
-    const foundProject = await getProjectById(BigInt(1))
-    expect(foundProject).toBeDefined()
+    const existingProject = await getProjectById(BigInt(1))
+    expect(existingProject).toMatchObject(testProject)
   })
 
   it('should get all projects', async () => {
     const projects = await getProjects(testUserId)
-    expect(projects).toBeDefined()
+    expect(projects?.length).toBe(1)
   })
 
   it('should update a project', async () => {
-    const updatedProject = await updateProject(BigInt(1), {
+    const data: Partial<Project> = {
       name: 'Updated Project',
       description: 'Updated Description',
-    })
+    }
 
-    const updatedRecord = await prisma.project.findUnique({
-      where: {
-        id: 1
-      }
-    })
-
-    expect(updatedProject?.name).toBe(updatedRecord?.name as string)
-  })
-
-  it('should delete a project', async () => {
-    await deleteProject(BigInt(1))
+    const updatedProject = await updateProject(projectId, data)
 
     const record = await prisma.project.findUnique({
       where: {
-        id: 1
+        id: projectId
+      }
+    })
+
+    expect(updatedProject?.name).toBe(record?.name as string)
+  })
+
+  it('should delete a project', async () => {
+    await deleteProject(projectId)
+
+    const record = await prisma.project.findUnique({
+      where: {
+        id: projectId
       }
     })
 
