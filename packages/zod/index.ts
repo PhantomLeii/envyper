@@ -17,7 +17,7 @@ export const ProjectSchema = z.object({
   description: z.string(),
   createdAt: z.date(),
   creatorId: z.bigint(),
-  users: z.array(z.bigint()),
+  users: z.optional(z.array(z.bigint())),
 });
 
 export const EnvironmentSchema = z.object({
