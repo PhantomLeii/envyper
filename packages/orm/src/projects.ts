@@ -11,7 +11,7 @@ export const getProjects = async (userId: bigint): Promise<Project[]|void> => {}
 
 export const getProjectById = async (projectId: bigint): Promise<Project|void> => {}
 
-export const createProject = async (data: CreateProject, userId: bigint): Promise<Project|void> => {}
+export const createProject = async (data: CreateProject): Promise<Project|void> => {}
 
 export const updateProject = async (projectId: bigint, data: Partial<Project>): Promise<Project|void> => {}
 

@@ -36,7 +36,7 @@ export const EnvVariableSchema = z.object({
 
 // Create input schemas
 export const CreateUserSchema = UserSchema.omit({ id: true, createdAt: true });
-export const CreateProjectSchema = ProjectSchema.omit({ id: true, createdAt: true });
+export const CreateProjectSchema = ProjectSchema.omit({ id: true, createdAt: true, users: true });
 export const CreateEnvironmentSchema = EnvironmentSchema.omit({ id: true });
 export const CreateEnvVariableSchema = EnvVariableSchema.omit({ id: true });
 
