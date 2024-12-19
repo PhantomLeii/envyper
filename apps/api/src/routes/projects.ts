@@ -3,7 +3,8 @@ import { Hono } from "hono";
 const projects = new Hono();
 
 projects.get("/", (c) => {
-  return c.json({ data: [], message: "Returns all users projects" });
+  c.status(200);
+  return c.json({ body: [], status: 200 });
 });
 
 projects.get("/:id{[0-9]+}", (c) => {
