@@ -12,15 +12,16 @@
     "lint": "eslint src/**/*.ts",
     "format": "bunx prisma format --schema src/prisma/schema.prisma",
     "migrate": "bunx prisma migrate dev --schema src/prisma/schema.prisma",
+    "migrate:reset": "bunx prisma migrate reset --schema src/prisma/schema.prisma --force",
     "generate": "bunx prisma generate --schema src/prisma/schema.prisma",
     "test": "bun test",
     "test:watch": "bun test --watch",
     "install": "bun i"
   },
   "devDependencies": {
-    "@envyper/eslint-config": "*",
-    "@envyper/typescript-config": "*",
-    "@envyper/zod": "*"
+    "@envyper/eslint-config": "workspace:*",
+    "@envyper/typescript-config": "workspace:*",
+    "@envyper/zod": "workspace:*"
   },
   "dependencies": {
     "@prisma/client": "^6.1.0",
