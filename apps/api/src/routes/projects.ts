@@ -15,7 +15,7 @@ const projects = new Hono()
     "/",
     zValidator("json", CreateProjectSchema.omit({ creatorId: true })),
     async (c) => {
-      const { name, description } = c.req.valid("json");
+      const data = c.req.valid("json");
 
       const user: User | null = await getUser("test-user");
       if (!user) {
@@ -23,9 +23,8 @@ const projects = new Hono()
       }
 
       const project: Project = await createProject({
-        name,
-        description,
-        creatorId: user?.id as number,
+        ...data,
+        creatorId: user.id,
       });
 
       if (!project) {

@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 const main = async () => {
   console.log("Running migrations:", Bun.env.DATABASE_URL);
   runMigration();
+  await createTestUser("test-user");
 };
 
 afterAll(async () => {
@@ -17,6 +18,16 @@ const runMigration = () => {
   execSync("npm run migrate:reset -w @envyper/orm", {
     stdio: "inherit",
   });
+};
+
+const createTestUser = async (userId: string) => {
+  await prisma.user.create({
+    data: {
+      userId,
+    },
+  });
+
+  console.log(`User: ${userId} created successfully`);
 };
 
 main();

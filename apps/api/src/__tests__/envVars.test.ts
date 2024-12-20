@@ -54,7 +54,7 @@ describe("Environment Variable Endpoints", () => {
 
   it("should return all environment variables belonging to project", async () => {
     const res = await testClient(app).variables.$get({
-      json: { projectId: testProjectId },
+    query: { projectId: String(testProjectId) },
     });
     const variables = await res.json();
 

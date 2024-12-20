@@ -39,19 +39,18 @@ const envVars = new Hono()
     },
   )
 
-  .get(
-    "/",
-    zValidator("json", CreateEnvVariableSchema.partial()),
-    async (c) => {
-      try {
-        const { projectId } = c.req.valid("json");
-        const variables = await getEnvVariables(projectId as number);
-        return c.json({ data: variables }, 200);
-      } catch (e) {
-        return c.json({ error: "Failed to fetch variables." }, 500);
+  .get("/", async (c) => {
+    try {
+      const projectId = parseInt(c.req.query("projectId") || "");
+      if (isNaN(projectId)) {
+        return c.json({ error: "Invalid projectId" }, 400);
       }
-    },
-  )
+      const variables = await getEnvVariables(projectId);
+      return c.json({ data: variables }, 200);
+    } catch (e) {
+      return c.json({ error: "Failed to fetch variables." }, 500);
+    }
+  })
 
   .get("/:id{[0-9]+}", async (c) => {
     const variableId = parseInt(c.req.param("id"));

@@ -16,13 +16,16 @@ describe("Projects Enpoints", () => {
   };
 
   let projectId: number;
+  let testUserId: number;
 
   beforeAll(async () => {
-    const testUser = await prisma.user.create({
-      data: {
+    const testUser = await prisma.user.findFirst({
+      where: {
         userId: "test-user",
       },
     });
+
+    testUserId = testUser?.id as number;
   });
 
   it("should create a new project", async () => {
@@ -43,7 +46,7 @@ describe("Projects Enpoints", () => {
     const projects = await res.json();
 
     if ("data" in projects) {
-      expect(projects.data?.length).toBe(1);
+      expect(projects.data?.length).toBeGreaterThanOrEqual(1);
       expect(res.status).toBe(200);
     } else {
       expect(res.status).toBe(500);
