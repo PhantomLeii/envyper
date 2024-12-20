@@ -16,7 +16,14 @@ describe("Projects Enpoints", () => {
   };
 
   let projectId: number;
-  let extraProject: Project;
+
+  beforeAll(async () => {
+    const testUser = await prisma.user.create({
+      data: {
+        userId: "test-user",
+      },
+    });
+  });
 
   it("should create a new project", async () => {
     const res = await testClient(app).projects.$post({ json: testData });
@@ -29,15 +36,6 @@ describe("Projects Enpoints", () => {
     expect(res.status).toBe(201);
 
     projectId = record?.id as number;
-
-    // create extra test project
-    extraProject = await prisma.project.create({
-      data: {
-        name: "Extra project",
-        description: "Extra description",
-        creatorId: 2,
-      },
-    });
   });
 
   it("should return all projects belonging to user", async () => {
@@ -84,5 +82,11 @@ describe("Projects Enpoints", () => {
     const res = await testClient(app).projects[":id{[0-9]+}"].$delete({
       param: { id: String(projectId) },
     });
+
+    const record = await prisma.project.findFirst({
+      where: { id: projectId },
+    });
+
+    expect(record).toBeNull();
   });
 });

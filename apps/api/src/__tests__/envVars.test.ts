@@ -11,6 +11,7 @@ const prisma = new PrismaClient();
 
 describe("Environment Variable Endpoints", () => {
   let testProjectId: number;
+  let testVariableId: number;
 
   const testData: Omit<CreateEnvVariable, "projectId"> = {
     key: "DUMMY_TEST_KEY",
@@ -19,12 +20,17 @@ describe("Environment Variable Endpoints", () => {
   };
 
   beforeAll(async () => {
-    const testProject = await prisma.envVariable.create({
+    const testUser = await prisma.user.findFirst({
+      where: {
+        userId: "test-user",
+      },
+    });
+
+    const testProject = await prisma.project.create({
       data: {
-        key: "TEST_KEY",
-        value: "TEST_VALUE",
-        envType: "DEV",
-        projectId: 1,
+        name: "Test project",
+        description: "Test description",
+        creatorId: testUser?.id as number,
       },
     });
 
@@ -32,7 +38,9 @@ describe("Environment Variable Endpoints", () => {
   });
 
   it("should create a new environment variable", async () => {
-    const res = await testClient(app).variables.$post({ json: testData });
+    const res = await testClient(app).variables.$post({
+      json: { ...testData, projectId: testProjectId },
+    });
 
     const record = await prisma.envVariable.findFirst({
       where: { key: testData.key },
@@ -40,17 +48,62 @@ describe("Environment Variable Endpoints", () => {
 
     expect(record).toMatchObject(testData);
     expect(res.status).toBe(201);
+
+    testVariableId = record?.id as number;
   });
 
-  it("should get all environment variables under the specific project", async () => {
-    const res = await testClient(app).variables.$get();
+  it("should return all environment variables belonging to project", async () => {
+    const res = await testClient(app).variables.$get({
+      json: { projectId: testProjectId },
+    });
     const variables = await res.json();
 
     if ("data" in variables) {
-      expect(variables.data?.length).toBe(1);
+      expect(variables.data).toHaveLength(1);
       expect(res.status).toBe(200);
     } else {
       expect(res.status).toBe(500);
     }
+  });
+
+  it("should return a specific environment variable", async () => {
+    const res = await testClient(app).variables[":id{[0-9]+}"].$get({
+      param: { id: String(testVariableId) },
+    });
+
+    const variable = await res.json();
+
+    if ("data" in variable) {
+      expect(variable.data).toMatchObject(testData);
+      expect(res.status).toBe(200);
+    } else {
+      expect(res.status).toBe(404);
+    }
+  });
+
+  it("should update an environment variable", async () => {
+    const res = await testClient(app).variables[":id{[0-9]+}"].$patch({
+      param: { id: String(testVariableId) },
+      json: { value: "UPDATED_VALUE" },
+    });
+
+    const updatedVariable = await prisma.envVariable.findFirst({
+      where: { id: testVariableId },
+    });
+
+    expect(updatedVariable?.value).toBe("UPDATED_VALUE");
+    expect(res.status).toBe(200);
+  });
+
+  it("should delete an environment variable", async () => {
+    const res = await testClient(app).variables[":id{[0-9]+}"].$delete({
+      param: { id: String(testVariableId) },
+    });
+
+    const deletedVariable = await prisma.envVariable.findFirst({
+      where: { id: testVariableId },
+    });
+
+    expect(deletedVariable).toBeNull();
   });
 });
