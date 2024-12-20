@@ -101,8 +101,9 @@ const projects = new Hono()
       return c.json({ error: "User not found" }, 401);
     }
 
+    const projectId = parseInt(c.req.param("id"));
     try {
-      await deleteProject(c.req.param("id"));
+      await deleteProject(projectId);
       return c.status(200);
     } catch (e) {
       return c.json({ error: "Failed to delete project" }, 500);
