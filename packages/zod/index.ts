@@ -6,32 +6,35 @@ export type EnvType = z.infer<typeof EnvTypeSchema>;
 
 // Base schemas
 export const UserSchema = z.object({
-  id: z.bigint(),
+  id: z.number(),
   userId: z.string(),
   createdAt: z.date(),
 });
 
 export const ProjectSchema = z.object({
-  id: z.bigint(),
+  id: z.number(),
   name: z.string().max(150),
   description: z.string(),
   createdAt: z.date(),
-  creatorId: z.bigint(),
-  users: z.optional(z.array(z.bigint())),
+  creatorId: z.number(),
+  users: z.optional(z.array(z.number())),
 });
 
 export const EnvVariableSchema = z.object({
-  id: z.bigint(),
+  id: z.number(),
   key: z.string(),
   value: z.string(),
   envType: EnvTypeSchema.default("DEV"),
-  projectId: z.bigint(),
+  projectId: z.number(),
 });
-
 
 // Create input schemas
 export const CreateUserSchema = UserSchema.omit({ id: true, createdAt: true });
-export const CreateProjectSchema = ProjectSchema.omit({ id: true, createdAt: true, users: true });
+export const CreateProjectSchema = ProjectSchema.omit({
+  id: true,
+  createdAt: true,
+  users: true,
+});
 export const CreateEnvVariableSchema = EnvVariableSchema.omit({ id: true });
 
 // Types
