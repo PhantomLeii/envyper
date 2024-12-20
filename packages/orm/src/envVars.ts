@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
  * @returns Promise that resolves to an array of environment variables
  */
 export const getEnvVariables = async (
-  projectId: bigint,
+  projectId: number,
 ): Promise<EnvVariable[]> => {
   return await prisma.envVariable.findMany({
     where: {
@@ -25,7 +25,7 @@ export const getEnvVariables = async (
  * @returns Promise that resolves to the environment variable if found, null otherwise
  */
 export const getEnvVariableById = async (
-  envVariableId: bigint,
+  envVariableId: number,
 ): Promise<EnvVariable | null> => {
   return await prisma.envVariable.findUnique({
     where: {
@@ -63,7 +63,7 @@ export const createEnvVariable = async (
  * @returns Promise that resolves to the updated environment variable
  */
 export const updateEnvVariable = async (
-  envVariableId: bigint,
+  envVariableId: number,
   data: Partial<CreateEnvVariable>,
 ): Promise<EnvVariable> => {
   return await prisma.envVariable.update({
@@ -80,7 +80,7 @@ export const updateEnvVariable = async (
  * @returns Promise that resolves when deletion is complete
  */
 export const deleteEnvVariable = async (
-  envVariableId: bigint,
+  envVariableId: number,
 ): Promise<void> => {
   await prisma.envVariable.delete({
     where: {
