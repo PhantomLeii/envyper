@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
  * @param userId - The unique identifier of the user (bigint)
  * @returns Promise that resolves to an array of Project objects
  */
-export const getProjects = async (userId: bigint): Promise<Project[]> => {
+export const getProjects = async (userId: number): Promise<Project[]> => {
   return await prisma.project.findMany({
     where: {
       creatorId: userId,
@@ -24,7 +24,7 @@ export const getProjects = async (userId: bigint): Promise<Project[]> => {
  * @returns A Promise that resolves to either the found Project object or null if no project was found.
  */
 export const getProjectById = async (
-  projectId: bigint,
+  projectId: number,
 ): Promise<Project | null> => {
   return await prisma.project.findUnique({
     where: {
@@ -60,7 +60,7 @@ export const createProject = async (data: CreateProject): Promise<Project> => {
  * @throws Will throw an error if project with given ID is not found
  */
 export const updateProject = async (
-  projectId: bigint,
+  projectId: number,
   data: Partial<CreateProject>,
 ): Promise<Project> => {
   return await prisma.project.update({
@@ -77,7 +77,7 @@ export const updateProject = async (
  * @returns A Promise that resolves when the project is successfully deleted
  * @throws Will throw an error if the project doesn't exist or if the deletion fails
  */
-export const deleteProject = async (projectId: bigint): Promise<void> => {
+export const deleteProject = async (projectId: number): Promise<void> => {
   await prisma.project.delete({
     where: {
       id: projectId,

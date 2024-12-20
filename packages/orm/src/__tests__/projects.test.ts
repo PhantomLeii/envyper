@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from "bun:test";
+import { describe, it, expect, beforeAll, afterAll, test } from "bun:test";
 import { PrismaClient } from "@prisma/client";
 import type { CreateProject, Project, User } from "@envyper/zod";
 
@@ -13,12 +13,12 @@ import {
 const prisma = new PrismaClient();
 
 describe("Projects", () => {
-  let testUserId: bigint, projectId: bigint;
+  let testUserId: number, projectId: number;
 
   const testProject: CreateProject = {
     name: "Test Project",
     description: "Test Description",
-    creatorId: BigInt(1),
+    creatorId: 1,
   };
 
   beforeAll(async () => {
@@ -31,7 +31,7 @@ describe("Projects", () => {
       },
     });
 
-    testUserId = testUser?.id as bigint;
+    testUserId = testUser?.id as number;
   });
 
   afterAll(async () => {
@@ -53,7 +53,7 @@ describe("Projects", () => {
   });
 
   it("should get a project by id", async () => {
-    const existingProject = await getProjectById(BigInt(1));
+    const existingProject = await getProjectById(1);
     expect(existingProject).toMatchObject(testProject);
   });
 
