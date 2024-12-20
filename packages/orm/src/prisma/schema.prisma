@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id        BigInt    @id @default(autoincrement())
+  id        Int    @id @default(autoincrement())
   userId    String    @unique
   createdAt DateTime  @default(now())
   projects  Project[] @relation("creator")
@@ -22,23 +22,23 @@ model User {
 }
 
 model Project {
-  id          BigInt        @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   name        String        @db.VarChar(150)
   description String        @db.Text
   createdAt   DateTime      @default(now())
   creator     User          @relation(fields: [creatorId], references: [id], name: "creator")
-  creatorId   BigInt
+  creatorId   Int
   users       User[]        @relation("members")
   variables   EnvVariable[] @relation("variables")
 }
 
 model EnvVariable {
-  id        BigInt  @id @default(autoincrement())
+  id        Int  @id @default(autoincrement())
   key       String
   value     String  @unique
   envType   EnvType
   project   Project @relation(fields: [projectId], references: [id], name: "variables")
-  projectId BigInt
+  projectId Int
 
   @@unique([key, projectId])
 }
