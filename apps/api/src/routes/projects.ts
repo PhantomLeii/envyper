@@ -11,7 +11,6 @@ import {
 import { getUser } from "@envyper/orm/utils";
 
 const projects = new Hono()
-
   .post(
     "/",
     zValidator("json", CreateProjectSchema.omit({ creatorId: true })),
