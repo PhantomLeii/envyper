@@ -1,7 +1,13 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { CreateProjectSchema, Project, User } from "@envyper/zod";
-import { createProject } from "@envyper/orm/projects";
+import {
+  createProject,
+  deleteProject,
+  getProjectById,
+  getProjects,
+  updateProject,
+} from "@envyper/orm/projects";
 import { getUser } from "@envyper/orm/utils";
 
 const projects = new Hono()
@@ -31,12 +37,76 @@ const projects = new Hono()
     },
   )
 
-  .get("/", (c) => c.json({ data: [] }, 200))
+  .get("/", async (c) => {
+    const user = await getUser("test-user");
+    if (!user) {
+      return c.json({ error: "User not found" }, 401);
+    }
 
-  .get("/:id{[0-9]+}", (c) => c.json({ data: {} }, 200))
+    try {
+      const projects = await getProjects(user?.id as number);
+      return c.json({ data: projects }, 200);
+    } catch (e) {
+      return c.json({ error: "Failed to fetch projects" }, 500);
+    }
+  })
 
-  .patch("/:id{[0-9]+}", (c) => c.json({ data: {} }, 200))
+  .get("/:id{[0-9]+}", async (c) => {
+    const user = await getUser("test-user");
+    if (!user) {
+      return c.json({ error: "User not found" }, 401);
+    }
 
-  .delete("/:id{[0-9]+}", (c) => c.json({ data: {} }, 200));
+    const projectId = parseInt(c.req.param("id"));
+    try {
+      const project = await getProjectById(projectId);
+      if (!project) {
+        return c.json({ error: "Project not found" }, 404);
+      }
+
+      return c.json({ data: project }, 200);
+    } catch (e) {
+      return c.json({ error: "Failed to fetch project" }, 500);
+    }
+  })
+
+  .patch(
+    "/:id{[0-9]+}",
+    zValidator("json", CreateProjectSchema.partial().omit({ creatorId: true })),
+    async (c) => {
+      const user = await getUser("test-user");
+      if (!user) {
+        return c.json({ error: "User not found" }, 401);
+      }
+
+      const projectId = parseInt(c.req.param("id"));
+      try {
+        const project = await getProjectById(projectId);
+        if (!project) {
+          return c.json({ error: "Project not found" }, 404);
+        }
+
+        const data = c.req.valid("json");
+        const updatedProject = await updateProject(projectId, { ...data });
+        return c.json({ data: updatedProject }, 200);
+      } catch (e) {
+        return c.json({ error: "Failed to update project" }, 500);
+      }
+    },
+  )
+
+  .delete("/:id{[0-9]+}", async (c) => {
+    const user = await getUser("test-user");
+    if (!user) {
+      return c.json({ error: "User not found" }, 401);
+    }
+
+    try {
+      await deleteProject(c.req.param("id"));
+      return c.status(200);
+    } catch (e) {
+      return c.json({ error: "Failed to delete project" }, 500);
+    }
+  });
 
 export default projects;

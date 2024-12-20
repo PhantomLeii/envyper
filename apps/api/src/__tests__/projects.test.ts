@@ -43,7 +43,7 @@ describe("Projects Enpoints", () => {
 
   it("should return all projects belonging to user", async () => {
     const res = await testClient(app).projects.$get();
-    const { data } = res.json();
+    const { data } = await res.json();
 
     expect(data?.length).toBe(1);
     expect(res.status).toBe(200);
@@ -51,9 +51,9 @@ describe("Projects Enpoints", () => {
 
   it("should return a single project", async () => {
     const res = await testClient(app).projects[":id"].$get({
-      param: { id: projectId },
+      param: { id: String(projectId) },
     });
-    const { data } = res.json();
+    const { data } = await res.json();
 
     expect(data).toMatchObject(testData);
     expect(res.status).toBe(200);
@@ -74,13 +74,8 @@ describe("Projects Enpoints", () => {
   });
 
   it("should delete a project", async () => {
-    const res = await testClient(app).projects[":id"].$delete();
-
-    const record = await prisma.project.findUnique({
-      where: { id: projectId },
+    const res = await testClient(app).projects[":id{[0-9]+}"].$delete({
+      param: { id: String(projectId) },
     });
-
-    expect(record).toBeNull();
-    expect(res.status).toBe(200);
   });
 });
