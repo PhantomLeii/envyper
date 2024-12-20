@@ -8,7 +8,8 @@ beforeAll(async () => {
   console.log("Setting up test environment\n");
   runMigration();
 
-  await createTestUser();
+  await createTestUser("test-user");
+  await createTestUser("test-user-2");
 
   console.log("Test environment setup complete\n");
 });
@@ -25,10 +26,10 @@ const runMigration = () => {
   });
 };
 
-const createTestUser = async () => {
+const createTestUser = async (userId: string) => {
   await prisma.user.create({
     data: {
-      userId: "test-user",
+      userId,
     },
   });
 

@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { CreateProjectSchema, User } from "@envyper/zod";
+import { CreateProjectSchema, Project, User } from "@envyper/zod";
 import { createProject } from "@envyper/orm/projects";
 import { getUser } from "@envyper/orm/utils";
 
@@ -17,7 +17,7 @@ const projects = new Hono()
         return c.json({ error: "User not found" }, 401);
       }
 
-      const project = await createProject({
+      const project: Project = await createProject({
         name,
         description,
         creatorId: user?.id as number,

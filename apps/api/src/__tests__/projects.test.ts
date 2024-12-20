@@ -17,40 +17,64 @@ describe("Projects Enpoints", () => {
   };
 
   let projectId: number;
+  let extraProject: Project;
 
   it("should create a new project", async () => {
-    const res = await testClient(app).projects.$post("/", testData, {
-      headers: { "Content-Type": "application/json" },
+    const res = await testClient(app).projects.$post({ json: testData });
+
+    const record = await prisma.project.findFirst({
+      where: { name: testData.name },
     });
 
-    console.log(res);
+    expect(record).toMatchObject(testData);
+    expect(res.status).toBe(201);
+
+    projectId = record?.id as number;
+
+    // create extra test project
+    extraProject = await prisma.project.create({
+      data: {
+        name: "Extra project",
+        description: "Extra description",
+        creatorId: 2,
+      },
+    });
+  });
+
+  it("should return all projects belonging to user", async () => {
+    const res = await testClient(app).projects.$get();
+    const { data } = res.json();
+
+    expect(data?.length).toBe(1);
+    expect(res.status).toBe(200);
   });
 
   it("should return a single project", async () => {
-    const res = await testClient(app).project.$get(`/${projectId}`);
-    const { data } = await res.json<{ data: Project }>();
+    const res = await testClient(app).projects[":id"].$get({
+      param: { id: projectId },
+    });
+    const { data } = res.json();
 
-    expect(data.id).toBe(projectId);
+    expect(data).toMatchObject(testData);
     expect(res.status).toBe(200);
   });
 
   it("should update a project", async () => {
-    const res = await testClient(app).project.$patch(`/${projectId}`, {
-      name: "Updated project",
+    const res = await testClient(app).projects[":id"].$patch({
+      param: { id: projectId },
+      json: { description: "Updated description" },
     });
 
-    const { data } = await res.json<{ data: Project }>();
-
-    const record = await prisma.project.findUnique({
+    const record = await prisma.project.findFirst({
       where: { id: projectId },
     });
 
-    expect(record.name).toBe(data.name);
+    expect(record?.description).toBe("Updated description");
     expect(res.status).toBe(200);
   });
 
   it("should delete a project", async () => {
-    const res = await testClient(app).project.$delete(`/${projectId}`);
+    const res = await testClient(app).projects[":id"].$delete();
 
     const record = await prisma.project.findUnique({
       where: { id: projectId },
