@@ -5,7 +5,8 @@
   "type": "module",
   "exports": {
     "./projects": "./src/projects.ts",
-    "./envVars": "./src/envVars.ts"
+    "./envVars": "./src/envVars.ts",
+    "./utils": "./src/utils.ts"
   },
   "scripts": {
     "build": "bun build --entrypoints src/index.ts --outdir dist --target node",
