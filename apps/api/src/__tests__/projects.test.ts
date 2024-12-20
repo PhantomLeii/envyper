@@ -16,18 +16,25 @@ describe("Projects Enpoints", () => {
     description: "Test description",
   };
 
+  const invalidTestData: CreateProject = {
+    name: "Test project",
+    description: "Test description",
+    invalidField: "Invalid field",
+  };
+
   let projectId: bigint;
 
   it("should create a new project", async () => {
     const res = await testClient(app).projects.$post(testData);
-    const project = await res.json<Project[]>();
-    expect(project).toMatchObject(testData);
+
+    const { projects, status } = await res.json<{ projects: Project[] }>();
 
     const record = await prisma.project.findUnique({
-      where: { id: project.id },
+      where: { id: data[0].project.id },
     });
 
     expect(record).toMatchObject(testData);
+    expect(status).toBe(201);
     projectId = res.body.data.id;
   });
 

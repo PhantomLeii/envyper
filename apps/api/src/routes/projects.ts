@@ -2,34 +2,14 @@ import { Hono } from "hono";
 
 const projects = new Hono()
 
-  .get("/", (c) => {
-    c.status(200);
-    return c.json({ body: [], status: 200 });
-  })
+  .get("/", (c) => c.json({ data: [] }, 200))
 
-  .get("/:id{[0-9]+}", (c) => {
-    return c.json({
-      data: [],
-      message: `Returns a single project with ID: ${c.req.param("id")}`,
-    });
-  })
+  .get("/:id{[0-9]+}", (c) => c.json({ data: [] }, 200))
 
-  .post("/", (c) => {
-    return c.json({ data: [], message: "Creates a new project" });
-  })
+  .post("/", (c) => c.json({ data: [] }, 201))
 
-  .patch("/:id{[0-9]+}", (c) => {
-    return c.json({
-      data: [],
-      message: `Updates a project with ID: ${c.req.param("id")}`,
-    });
-  })
+  .patch("/:id{[0-9]+}", (c) => c.json({ data: [] }, 200))
 
-  .delete("/:id{[0-9]+}", (c) => {
-    return c.json({
-      data: [],
-      message: `Deletes a project with ID: ${c.req.param("id")}`,
-    });
-  });
+  .delete("/:id{[0-9]+}", (c) => c.json({ data: [] }, 200));
 
 export default projects;
