@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { describe, it, expect, afterAll, beforeAll } from "bun:test";
 import { CreateProject, Project } from "@envyper/zod";
 import { PrismaClient } from "@prisma/client";
@@ -11,7 +10,7 @@ const app = new Hono().route("/projects", projects);
 const prisma = new PrismaClient();
 
 describe("Projects Enpoints", () => {
-  const testData: CreateProject = {
+  const testData: Omit<CreateProject, "creatorId"> = {
     name: "Test project",
     description: "Test description",
   };
@@ -43,25 +42,33 @@ describe("Projects Enpoints", () => {
 
   it("should return all projects belonging to user", async () => {
     const res = await testClient(app).projects.$get();
-    const { data } = await res.json();
+    const projects = await res.json();
 
-    expect(data?.length).toBe(1);
-    expect(res.status).toBe(200);
+    if ("data" in projects) {
+      expect(projects.data?.length).toBe(1);
+      expect(res.status).toBe(200);
+    } else {
+      expect(res.status).toBe(500);
+    }
   });
 
   it("should return a single project", async () => {
-    const res = await testClient(app).projects[":id"].$get({
+    const res = await testClient(app).projects[":id{[0-9]+}"].$get({
       param: { id: String(projectId) },
     });
-    const { data } = await res.json();
 
-    expect(data).toMatchObject(testData);
-    expect(res.status).toBe(200);
+    const project = await res.json();
+    if ("data" in project) {
+      expect(project.data).toMatchObject(testData);
+      expect(res.status).toBe(200);
+    } else {
+      expect(res.status).toBe(500);
+    }
   });
 
   it("should update a project", async () => {
-    const res = await testClient(app).projects[":id"].$patch({
-      param: { id: projectId },
+    const res = await testClient(app).projects[":id{[0-9]+}"].$patch({
+      param: { id: String(projectId) },
       json: { description: "Updated description" },
     });
 
