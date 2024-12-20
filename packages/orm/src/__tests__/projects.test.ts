@@ -35,6 +35,7 @@ describe("Projects", () => {
   });
 
   afterAll(async () => {
+    await prisma.$executeRaw`TRUNCATE TABLE "Projects" CASCADE`;
     await prisma.$disconnect();
   });
 

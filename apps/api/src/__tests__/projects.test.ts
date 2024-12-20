@@ -27,47 +27,48 @@ describe("Projects Enpoints", () => {
   it("should create a new project", async () => {
     const res = await testClient(app).projects.$post(testData);
 
-    const { projects, status } = await res.json<{ projects: Project[] }>();
+    const { data } = await res.json<{ data: Project[] }>();
 
     const record = await prisma.project.findUnique({
-      where: { id: data[0].project.id },
+      where: { id: data[0].id },
     });
 
     expect(record).toMatchObject(testData);
-    expect(status).toBe(201);
-    projectId = res.body.data.id;
+    expect(res.status).toBe(201);
+    projectId = data[0].id;
   });
 
   it("should return a single project", async () => {
-    const res = await testClient(app).project.$get(`/projects/${projectId}`);
-    const project = await res.json<Project>();
+    const res = await testClient(app).project.$get(`/${projectId}`);
+    const { data } = await res.json<{ data: Project }>();
 
-    expect(project.id).toBe(projectId);
+    expect(data.id).toBe(projectId);
+    expect(res.status).toBe(200);
   });
 
   it("should update a project", async () => {
-    const res = await testClient(app).project.$patch(`/projects/${projectId}`, {
+    const res = await testClient(app).project.$patch(`/${projectId}`, {
       name: "Updated project",
     });
-    const project = await res.json<Project>();
 
-    expect(project.name).toBe("Updated project");
+    const { data } = await res.json<{ data: Project }>();
 
     const record = await prisma.project.findUnique({
       where: { id: projectId },
     });
 
-    expect(record.name).toBe("Updated project");
+    expect(record.name).toBe(data.name);
+    expect(res.status).toBe(200);
   });
 
   it("should delete a project", async () => {
-    const res = await testClient(app).project.$delete(`/projects/${projectId}`);
-    expect(res.status).toBe(200);
+    const res = await testClient(app).project.$delete(`/${projectId}`);
 
     const record = await prisma.project.findUnique({
       where: { id: projectId },
     });
 
     expect(record).toBeNull();
+    expect(res.status).toBe(200);
   });
 });

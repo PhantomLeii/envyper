@@ -1,4 +1,4 @@
-import { beforeAll } from "bun:test";
+import { beforeAll, afterAll } from "bun:test";
 import { execSync } from "child_process";
 import { PrismaClient } from "@prisma/client";
 
@@ -13,10 +13,14 @@ beforeAll(() => {
   console.log("Test environment setup complete\n");
 });
 
-const runMigration = () => {
-  console.log("Migrating database:", process.env.DATABASE_URL);
+afterAll(async () => {
+  await prisma.$disconnect();
+});
 
-  execSync("npm run migrate -w @envyper/orm", {
+const runMigration = () => {
+  console.log("Migrating database:", Bun.env.DATABASE_URL);
+
+  execSync("npm run migrate:reset -w @envyper/orm", {
     stdio: "inherit",
   });
 };
