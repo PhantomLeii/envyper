@@ -4,11 +4,11 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-beforeAll(() => {
+beforeAll(async () => {
   console.log("Setting up test environment\n");
   runMigration();
 
-  createTestUser();
+  await createTestUser();
 
   console.log("Test environment setup complete\n");
 });

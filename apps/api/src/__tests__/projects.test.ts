@@ -16,13 +16,14 @@ describe("Projects Enpoints", () => {
     description: "Test description",
   };
 
-  let projectId: bigint;
+  let projectId: number;
 
-  it.only("should create a new project", async () => {
-    const res = await testClient(app).project.$post(testData);
+  it("should create a new project", async () => {
+    const res = await testClient(app).projects.$post("/", testData, {
+      headers: { "Content-Type": "application/json" },
+    });
 
-    const data = await res.json();
-    conlole.log(data);
+    console.log(res);
   });
 
   it("should return a single project", async () => {

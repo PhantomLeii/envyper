@@ -6,26 +6,34 @@ import { getUser } from "@envyper/orm/utils";
 
 const projects = new Hono()
 
-  .get("/", (c) => c.json({ data: [] }, 200))
+  .post(
+    "/",
+    zValidator("json", CreateProjectSchema.omit({ creatorId: true })),
+    async (c) => {
+      const { name, description } = c.req.valid("json");
 
-  .get("/:id{[0-9]+}", (c) => c.json({ data: {} }, 200))
-
-  .post("/", zValidator("form", CreateProjectSchema), async (c) => {
-    try {
-      const { name, description } = c.req.valid("form");
       const user: User | null = await getUser("test-user");
+      if (!user) {
+        return c.json({ error: "User not found" }, 401);
+      }
 
       const project = await createProject({
         name,
         description,
-        creatorId: user?.id as bigint,
+        creatorId: user?.id as number,
       });
 
+      if (!project) {
+        return c.json({ error: "Failed to create project" }, 500);
+      }
+
       return c.json({ data: project }, 201);
-    } catch (error) {
-      return c.json({ error: "Something went wrong" }, 400);
-    }
-  })
+    },
+  )
+
+  .get("/", (c) => c.json({ data: [] }, 200))
+
+  .get("/:id{[0-9]+}", (c) => c.json({ data: {} }, 200))
 
   .patch("/:id{[0-9]+}", (c) => c.json({ data: {} }, 200))
 
