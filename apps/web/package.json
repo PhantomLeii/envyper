@@ -12,17 +12,19 @@
   },
   "dependencies": {
     "@envyper/orm": "workspace:*",
+    "@tanstack/react-router": "^1.91.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@envyper/eslint-config": "workspace:*",
+    "@envyper/tailwind-config": "workspace:*",
     "@envyper/typescript-config": "workspace:*",
     "@envyper/zod": "workspace:*",
+    "@tanstack/router-plugin": "^1.91.1",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "@vitejs/plugin-react-swc": "^3.7.2",
-    "eslint-plugin-react": "^7.37.2",
     "vite": "^6.0.5"
   }
 }

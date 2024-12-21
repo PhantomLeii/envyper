@@ -1,4 +1,4 @@
-import { beforeAll, afterAll } from "bun:test";
+import { afterAll } from "bun:test";
 import { execSync } from "child_process";
 import { PrismaClient } from "@prisma/client";
 
@@ -30,4 +30,4 @@ const createTestUser = async (userId: string) => {
   console.log(`User: ${userId} created successfully`);
 };
 
-main();
+await main();

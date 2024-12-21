@@ -42,7 +42,7 @@ const projects = new Hono()
     }
 
     try {
-      const projects = await getProjects(user?.id as number);
+      const projects = await getProjects(user?.id);
       return c.json({ data: projects }, 200);
     } catch (e) {
       return c.json({ error: "Failed to fetch projects" }, 500);
@@ -101,8 +101,13 @@ const projects = new Hono()
 
     const projectId = parseInt(c.req.param("id"));
     try {
+      const project = await getProjectById(projectId);
+      if (!project) {
+        return c.json({ error: "Project not found" }, 404);
+      }
+
       await deleteProject(projectId);
-      return c.status(200);
+      return c.json({ data: project }, 200);
     } catch (e) {
       return c.json({ error: "Failed to delete project" }, 500);
     }
