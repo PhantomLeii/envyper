@@ -11,7 +11,8 @@
     "test:watch": "bun --watch test",
     "lint": "eslint src/**/*.ts",
     "seed": "bun src/scripts/seed.ts",
-    "clean": "rm -rf dist/"
+    "clean": "rm -rf dist/",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "@envyper/orm": "workspace:*",
