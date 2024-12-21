@@ -20,6 +20,10 @@
         "**/*.test.tsx"
       ]
     },
+    "start": {
+      "dependsOn": ["build"],
+      "inputs": ["dist/*"]
+    },
     "clean": {
       "dependsOn": ["build", "test"],
       "inputs": ["dist/**"]
