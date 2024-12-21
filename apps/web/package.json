@@ -19,6 +19,7 @@
     "@envyper/eslint-config": "workspace:*",
     "@envyper/typescript-config": "workspace:*",
     "@envyper/zod": "workspace:*",
+    "@envyper/tailwind-config": "workspace:*",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "@vitejs/plugin-react-swc": "^3.7.2",
