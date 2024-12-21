@@ -72,7 +72,7 @@ const envVars = new Hono()
       }
 
       await deleteEnvVariable(variableId);
-      return c.status(200);
+      return c.json({ data: variable }, 200);
     } catch (e) {
       return c.json({ error: "Failed to delete variable." }, 500);
     }

@@ -53,7 +53,7 @@ describe("Projects", () => {
   });
 
   it("should get a project by id", async () => {
-    const existingProject = await getProjectById(1);
+    const existingProject = await getProjectById(projectId);
     expect(existingProject).toMatchObject(testProject);
   });
 

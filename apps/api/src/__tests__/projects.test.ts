@@ -1,5 +1,5 @@
-import { describe, it, expect, afterAll, beforeAll } from "bun:test";
-import { CreateProject, Project } from "@envyper/zod";
+import { describe, it, expect } from "bun:test";
+import { CreateProject } from "@envyper/zod";
 import { PrismaClient } from "@prisma/client";
 import { testClient } from "hono/testing";
 import { Hono } from "hono";
@@ -16,17 +16,14 @@ describe("Projects Enpoints", () => {
   };
 
   let projectId: number;
-  let testUserId: number;
 
-  beforeAll(async () => {
-    const testUser = await prisma.user.findFirst({
-      where: {
-        userId: "test-user",
-      },
-    });
-
-    testUserId = testUser?.id as number;
-  });
+  // beforeAll(async () => {
+  //   await prisma.user.findFirst({
+  //     where: {
+  //       userId: "test-user",
+  //     },
+  //   });
+  // });
 
   it("should create a new project", async () => {
     const res = await testClient(app).projects.$post({ json: testData });
@@ -82,7 +79,7 @@ describe("Projects Enpoints", () => {
   });
 
   it("should delete a project", async () => {
-    const res = await testClient(app).projects[":id{[0-9]+}"].$delete({
+    await testClient(app).projects[":id{[0-9]+}"].$delete({
       param: { id: String(projectId) },
     });
 
