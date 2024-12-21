@@ -21,7 +21,6 @@
       ]
     },
     "start": {
-      "dependsOn": ["build"],
       "inputs": ["dist/*"]
     },
     "clean": {
