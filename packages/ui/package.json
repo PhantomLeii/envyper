@@ -1,0 +1,14 @@
+{
+  "name": "@envyper/ui",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "test": "echo 'Add test script here'",
+    "lint": "echo 'Add lint script here'"
+  },
+  "devDependencies": {
+    "@envyper/eslint-config": "*",
+    "@envyper/tailwind-config": "*",
+    "@envyper/typescript-config": "*"
+  }
+}

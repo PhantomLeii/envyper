@@ -8,7 +8,8 @@
     "build": "bunx --bun vite build",
     "test": "bun test",
     "test:watch": "bun --watch test",
-    "lint": "eslint \"**/*.{ts,tsx}\""
+    "lint": "eslint \"**/*.{ts,tsx}\"",
+    "clean": "rm -rf dist/"
   },
   "dependencies": {
     "@envyper/orm": "workspace:*",
