@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll, test } from "bun:test";
+import { describe, it, expect, beforeAll, afterAll } from "bun:test";
 import { PrismaClient } from "@prisma/client";
 import type { CreateProject, Project, User } from "@envyper/zod";
 
