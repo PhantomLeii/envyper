@@ -36,7 +36,7 @@ function RootLayout() {
         useHref={(to) => router.buildLocation({ to }).href}
       >
         <Navbar />
-        <div className="container mx-auto relative top-[64px] w-full py-6">
+        <div className="container mx-auto relative top-[64px] w-full py-2">
           <Outlet />
         </div>
       </NextUIProvider>
