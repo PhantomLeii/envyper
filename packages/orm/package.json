@@ -9,7 +9,7 @@
     "./utils": "./src/utils.ts"
   },
   "scripts": {
-    "build": "bun build --entrypoints src/index.ts --outdir dist --target node",
+    "build": "bun build --entrypoints src/*.ts --outdir dist --target node",
     "lint": "eslint src/**/*.ts",
     "format": "bunx prisma format --schema src/prisma/schema.prisma",
     "migrate": "bunx prisma migrate dev --schema src/prisma/schema.prisma",
@@ -17,7 +17,7 @@
     "generate": "bunx prisma generate --schema src/prisma/schema.prisma",
     "test": "bun test",
     "test:watch": "bun test --watch",
-    "install": "bun i"
+    "clean": "rm -rf dist/"
   },
   "devDependencies": {
     "@envyper/eslint-config": "workspace:*",

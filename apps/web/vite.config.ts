@@ -3,14 +3,15 @@ import react from "@vitejs/plugin-react-swc";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import path from "path";
 
-console.log(path.resolve(__dirname, "./"));
+const isTest = process.env.NODE_ENV === "test";
 
 export default defineConfig({
   plugins: [
-    TanStackRouterVite({
-      generatedRouteTree: "./routeTree.gen.ts",
-      routesDirectory: "./app",
-    }),
+    !isTest &&
+      TanStackRouterVite({
+        generatedRouteTree: "./routeTree.gen.ts",
+        routesDirectory: "./app",
+      }),
     react(),
   ],
   server: {
