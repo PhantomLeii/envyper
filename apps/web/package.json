@@ -14,7 +14,9 @@
   },
   "dependencies": {
     "@envyper/orm": "workspace:*",
+    "@nextui-org/react": "^2.6.8",
     "@tanstack/react-router": "^1.91.3",
+    "framer-motion": "^11.15.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
