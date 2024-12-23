@@ -25,13 +25,20 @@ function RootLayout() {
   const router = useRouter();
 
   return (
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl={"/"}>
+    <ClerkProvider
+      publishableKey={PUBLISHABLE_KEY}
+      afterSignOutUrl={"/"}
+      signInUrl="/sign-in"
+      signUpUrl="/sign-up"
+    >
       <NextUIProvider
         navigate={(to, options) => router.navigate({ to, ...options })}
         useHref={(to) => router.buildLocation({ to }).href}
       >
         <Navbar />
-        <Outlet />
+        <div className="container mx-auto relative top-[64px] w-full py-6">
+          <Outlet />
+        </div>
       </NextUIProvider>
     </ClerkProvider>
   );

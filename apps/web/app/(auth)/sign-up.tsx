@@ -1,9 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SignUp } from "@clerk/clerk-react";
 
 export const Route = createFileRoute("/(auth)/sign-up")({
-  component: SignOut,
+  component: SignUpPage,
 });
 
-function SignOut() {
-  return <div>Hello "/(auth)/sign-out"!</div>;
+function SignUpPage() {
+  return (
+    <div className="flex items-center justify-center h-screen w-full">
+      <SignUp />
+    </div>
+  );
 }
