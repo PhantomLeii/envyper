@@ -8,6 +8,8 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './app/__root'
@@ -15,7 +17,14 @@ import { Route as DocsImport } from './app/docs'
 import { Route as AboutImport } from './app/about'
 import { Route as IndexImport } from './app/index'
 import { Route as authSignUpImport } from './app/(auth)/sign-up'
+import { Route as authSignOutImport } from './app/(auth)/sign-out'
 import { Route as authSignInImport } from './app/(auth)/sign-in'
+import { Route as authProjectsIndexImport } from './app/(auth)/projects/index'
+import { Route as authProjectsLayoutImport } from './app/(auth)/projects/_layout'
+
+// Create Virtual Routes
+
+const authProjectsImport = createFileRoute('/(auth)/projects')()
 
 // Create/Update Routes
 
@@ -37,9 +46,21 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const authProjectsRoute = authProjectsImport.update({
+  id: '/(auth)/projects',
+  path: '/projects',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const authSignUpRoute = authSignUpImport.update({
   id: '/(auth)/sign-up',
   path: '/sign-up',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const authSignOutRoute = authSignOutImport.update({
+  id: '/(auth)/sign-out',
+  path: '/sign-out',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -47,6 +68,17 @@ const authSignInRoute = authSignInImport.update({
   id: '/(auth)/sign-in',
   path: '/sign-in',
   getParentRoute: () => rootRoute,
+} as any)
+
+const authProjectsIndexRoute = authProjectsIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => authProjectsRoute,
+} as any)
+
+const authProjectsLayoutRoute = authProjectsLayoutImport.update({
+  id: '/_layout',
+  getParentRoute: () => authProjectsRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -81,6 +113,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSignInImport
       parentRoute: typeof rootRoute
     }
+    '/(auth)/sign-out': {
+      id: '/(auth)/sign-out'
+      path: '/sign-out'
+      fullPath: '/sign-out'
+      preLoaderRoute: typeof authSignOutImport
+      parentRoute: typeof rootRoute
+    }
     '/(auth)/sign-up': {
       id: '/(auth)/sign-up'
       path: '/sign-up'
@@ -88,17 +127,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSignUpImport
       parentRoute: typeof rootRoute
     }
+    '/(auth)/projects': {
+      id: '/(auth)/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof authProjectsImport
+      parentRoute: typeof rootRoute
+    }
+    '/(auth)/projects/_layout': {
+      id: '/(auth)/projects/_layout'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof authProjectsLayoutImport
+      parentRoute: typeof authProjectsRoute
+    }
+    '/(auth)/projects/': {
+      id: '/(auth)/projects/'
+      path: '/'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof authProjectsIndexImport
+      parentRoute: typeof authProjectsImport
+    }
   }
 }
 
 // Create and export the route tree
+
+interface authProjectsRouteChildren {
+  authProjectsLayoutRoute: typeof authProjectsLayoutRoute
+  authProjectsIndexRoute: typeof authProjectsIndexRoute
+}
+
+const authProjectsRouteChildren: authProjectsRouteChildren = {
+  authProjectsLayoutRoute: authProjectsLayoutRoute,
+  authProjectsIndexRoute: authProjectsIndexRoute,
+}
+
+const authProjectsRouteWithChildren = authProjectsRoute._addFileChildren(
+  authProjectsRouteChildren,
+)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/docs': typeof DocsRoute
   '/sign-in': typeof authSignInRoute
+  '/sign-out': typeof authSignOutRoute
   '/sign-up': typeof authSignUpRoute
+  '/projects': typeof authProjectsLayoutRoute
+  '/projects/': typeof authProjectsIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -106,7 +183,9 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/docs': typeof DocsRoute
   '/sign-in': typeof authSignInRoute
+  '/sign-out': typeof authSignOutRoute
   '/sign-up': typeof authSignUpRoute
+  '/projects': typeof authProjectsIndexRoute
 }
 
 export interface FileRoutesById {
@@ -115,21 +194,44 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/docs': typeof DocsRoute
   '/(auth)/sign-in': typeof authSignInRoute
+  '/(auth)/sign-out': typeof authSignOutRoute
   '/(auth)/sign-up': typeof authSignUpRoute
+  '/(auth)/projects': typeof authProjectsRouteWithChildren
+  '/(auth)/projects/_layout': typeof authProjectsLayoutRoute
+  '/(auth)/projects/': typeof authProjectsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/docs' | '/sign-in' | '/sign-up'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/docs'
+    | '/sign-in'
+    | '/sign-out'
+    | '/sign-up'
+    | '/projects'
+    | '/projects/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/docs' | '/sign-in' | '/sign-up'
+  to:
+    | '/'
+    | '/about'
+    | '/docs'
+    | '/sign-in'
+    | '/sign-out'
+    | '/sign-up'
+    | '/projects'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/docs'
     | '/(auth)/sign-in'
+    | '/(auth)/sign-out'
     | '/(auth)/sign-up'
+    | '/(auth)/projects'
+    | '/(auth)/projects/_layout'
+    | '/(auth)/projects/'
   fileRoutesById: FileRoutesById
 }
 
@@ -138,7 +240,9 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   DocsRoute: typeof DocsRoute
   authSignInRoute: typeof authSignInRoute
+  authSignOutRoute: typeof authSignOutRoute
   authSignUpRoute: typeof authSignUpRoute
+  authProjectsRoute: typeof authProjectsRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -146,7 +250,9 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   DocsRoute: DocsRoute,
   authSignInRoute: authSignInRoute,
+  authSignOutRoute: authSignOutRoute,
   authSignUpRoute: authSignUpRoute,
+  authProjectsRoute: authProjectsRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -163,7 +269,9 @@ export const routeTree = rootRoute
         "/about",
         "/docs",
         "/(auth)/sign-in",
-        "/(auth)/sign-up"
+        "/(auth)/sign-out",
+        "/(auth)/sign-up",
+        "/(auth)/projects"
       ]
     },
     "/": {
@@ -178,8 +286,26 @@ export const routeTree = rootRoute
     "/(auth)/sign-in": {
       "filePath": "(auth)/sign-in.tsx"
     },
+    "/(auth)/sign-out": {
+      "filePath": "(auth)/sign-out.tsx"
+    },
     "/(auth)/sign-up": {
       "filePath": "(auth)/sign-up.tsx"
+    },
+    "/(auth)/projects": {
+      "filePath": "(auth)/projects",
+      "children": [
+        "/(auth)/projects/_layout",
+        "/(auth)/projects/"
+      ]
+    },
+    "/(auth)/projects/_layout": {
+      "filePath": "(auth)/projects/_layout.tsx",
+      "parent": "/(auth)/projects"
+    },
+    "/(auth)/projects/": {
+      "filePath": "(auth)/projects/index.tsx",
+      "parent": "/(auth)/projects"
     }
   }
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "@tanstack/react-router";
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, useClerk } from "@clerk/clerk-react";
 import {
   Navbar,
   NavbarBrand,
@@ -11,12 +11,18 @@ import {
   NavbarMenuItem,
   Link,
   Button,
+  Dropdown,
+  DropdownTrigger,
+  Avatar,
+  DropdownMenu,
+  DropdownItem,
 } from "@nextui-org/react";
 
 export function Component() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [pathname, setPathname] = React.useState("");
   const router = useRouter().state;
+  const { user } = useClerk();
 
   React.useEffect(() => {
     setPathname(router.location.pathname);
@@ -78,6 +84,43 @@ export function Component() {
           </NavbarItem>
         </NavbarContent>
       </SignedOut>
+
+      <SignedIn>
+        <NavbarContent as="div" justify="end">
+          <Dropdown placement="bottom-end">
+            <DropdownTrigger>
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
+                color="secondary"
+                name={user?.fullName || user?.emailAddresses[0]?.emailAddress}
+                size="sm"
+                src={user?.imageUrl}
+              />
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Profile Actions" variant="flat">
+              <DropdownItem key="profile" className="h-14 gap-2">
+                <p className="font-semibold">Signed in as</p>
+                <p className="font-semibold">
+                  {user?.emailAddresses[0]?.emailAddress}
+                </p>
+              </DropdownItem>
+              <DropdownItem key="home">
+                <Link href="/">Home</Link>
+              </DropdownItem>
+              <DropdownItem key="projects">
+                <Link href="/projects">My Projects</Link>
+              </DropdownItem>
+              <DropdownItem key="logout" color="danger">
+                <Link href="/sign-out" color="danger">
+                  Sign Out
+                </Link>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </NavbarContent>
+      </SignedIn>
 
       <NavbarMenu>
         {menuItems.map((item, index) => (
