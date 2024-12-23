@@ -1,7 +1,6 @@
 {
   "extends": "@envyper/typescript-config/base.json",
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "outDir": "dist",
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
