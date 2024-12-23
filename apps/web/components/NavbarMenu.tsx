@@ -114,6 +114,9 @@ export function Component() {
               <DropdownItem key="projects">
                 <Link href="/projects">My Projects</Link>
               </DropdownItem>
+              <DropdownItem key="docs">
+                <Link href="/docs">Docs</Link>
+              </DropdownItem>
               <DropdownItem
                 onPress={() => signOut()}
                 key="logout"
