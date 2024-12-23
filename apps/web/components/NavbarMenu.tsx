@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "@tanstack/react-router";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import {
   Navbar,
   NavbarBrand,
@@ -65,16 +66,18 @@ export function Component() {
         ))}
       </NavbarContent>
 
-      <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="/sign-in">Sign In</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="primary" href="sign-up" variant="flat">
-            Sign Up
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
+      <SignedOut>
+        <NavbarContent justify="end">
+          <NavbarItem className="hidden lg:flex">
+            <Link href="/sign-in">Sign In</Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Button as={Link} color="primary" href="sign-up" variant="flat">
+              Sign Up
+            </Button>
+          </NavbarItem>
+        </NavbarContent>
+      </SignedOut>
 
       <NavbarMenu>
         {menuItems.map((item, index) => (
