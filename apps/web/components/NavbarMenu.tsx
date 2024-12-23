@@ -59,18 +59,20 @@ export function Component() {
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        {menuItems.map((item, index) => (
-          <NavbarItem
-            key={`${item.label}-${index}`}
-            isActive={pathname === item.href}
-          >
-            <Link color="foreground" href={item.href}>
-              {item.label}
-            </Link>
-          </NavbarItem>
-        ))}
-      </NavbarContent>
+      <SignedOut>
+        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+          {menuItems.map((item, index) => (
+            <NavbarItem
+              key={`${item.label}-${index}`}
+              isActive={pathname === item.href}
+            >
+              <Link color="foreground" href={item.href}>
+                {item.label}
+              </Link>
+            </NavbarItem>
+          ))}
+        </NavbarContent>
+      </SignedOut>
 
       <SignedOut>
         <NavbarContent justify="end">
