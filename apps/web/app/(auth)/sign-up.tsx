@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/(auth)/sign-out")({
+export const Route = createFileRoute("/(auth)/sign-up")({
   component: SignOut,
 });
 
