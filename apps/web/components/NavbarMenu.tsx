@@ -22,7 +22,7 @@ export function Component() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [pathname, setPathname] = React.useState("");
   const router = useRouter().state;
-  const { user } = useClerk();
+  const { user, signOut } = useClerk();
 
   React.useEffect(() => {
     setPathname(router.location.pathname);
@@ -112,10 +112,12 @@ export function Component() {
               <DropdownItem key="projects">
                 <Link href="/projects">My Projects</Link>
               </DropdownItem>
-              <DropdownItem key="logout" color="danger">
-                <Link href="/sign-out" color="danger">
-                  Sign Out
-                </Link>
+              <DropdownItem
+                onPress={() => signOut()}
+                key="logout"
+                color="danger"
+              >
+                Sign Out
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>

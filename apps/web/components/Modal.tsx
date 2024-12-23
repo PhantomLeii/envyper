@@ -12,8 +12,23 @@ import {
 type ModalProps = {
   backdrop: string;
   btnText: string;
-  btnColor: string;
-  btnVariant: string;
+  btnColor:
+    | "default"
+    | "primary"
+    | "success"
+    | "warning"
+    | "danger"
+    | "secondary"
+    | undefined;
+  btnVariant:
+    | "flat"
+    | "shadow"
+    | "solid"
+    | "bordered"
+    | "light"
+    | "ghost"
+    | "faded"
+    | undefined;
   modalTitle: string;
   children: React.ReactNode;
   onConfirm: () => void;
@@ -21,21 +36,21 @@ type ModalProps = {
   cancelBtnText: string;
 };
 
-export default function Component(props: ModalProps) {
+export function Component(props: ModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleOpen = () => {
+    onOpen();
+  };
 
   return (
     <>
       <div className="flex flex-wrap gap-3">
-        <Button
-          className="capitalize"
-          color="warning"
-          variant="flat"
-          onPress={() => onOpen()}
-        >
+        <span className="capitalize" onClick={() => handleOpen()}>
           {props.btnText}
-        </Button>
+        </span>
       </div>
+
       <Modal backdrop="blur" isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (
