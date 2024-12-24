@@ -25,4 +25,4 @@ const createTestProject = async () => {
   });
 };
 
-main();
+await main();
