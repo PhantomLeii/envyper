@@ -15,7 +15,7 @@
     "migrate": "bunx prisma migrate dev --schema src/prisma/schema.prisma",
     "migrate:reset": "bunx prisma migrate reset --schema src/prisma/schema.prisma --force",
     "generate": "bunx prisma generate --schema src/prisma/schema.prisma",
-    "test": "bun test",
+    "test": "infisical run --env=test -- bun test",
     "test:watch": "bun test --watch",
     "clean": "rm -rf dist/"
   },
