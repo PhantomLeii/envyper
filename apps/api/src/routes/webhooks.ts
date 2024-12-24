@@ -5,13 +5,12 @@ const webhooks = new Hono().post("/", async (c) => {
   const SIGNING_SECRET = process.env.SIGNING_SECRET as string;
   if (!SIGNING_SECRET) {
     // send error to expection tracking service
-    throw new Error("Error: Please add SIGNING_SECRET from Clerk Dashboard");
+    throw new Error("Error: Add SIGNING_SECRET from Clerk Dashboard");
   }
 
   const hook = new Webhook(SIGNING_SECRET);
 
   const payload = await c.req.text();
-  console.log(payload);
 
   const svixId = c.req.header("svix-id");
   const svixTimestamp = c.req.header("svix-timestamp");
@@ -47,14 +46,22 @@ const webhooks = new Hono().post("/", async (c) => {
     );
   }
 
-  const { id } = event.data;
-  const eventType = event.type;
-  console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
-  console.log("Webhook payload:", event.data);
+  const { id, email_addresses, first_name, last_name } = event.data;
+  if (event.type === "user.created") {
+    // create user in database
+    // generate token for user
+    console.log("User created:", {
+      id,
+      emailAddress: email_addresses[0].email_address,
+      first_name,
+      last_name,
+      token: "token",
+    });
+  }
 
   return c.json(
     {
-      message: "Webhook received",
+      message: "success",
     },
     200,
   );
