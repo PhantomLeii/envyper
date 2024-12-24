@@ -5,7 +5,6 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const main = async () => {
-  console.log("Running migrations:", Bun.env.DATABASE_URL);
   runMigration();
   await createTestUser("test-user");
 };

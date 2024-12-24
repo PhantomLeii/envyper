@@ -28,12 +28,13 @@ const envVars = new Hono()
       try {
         const variable = await getEnvVariableById(variableId);
         if (!variable) {
-          return c.json({ error: "Variable not found" }, 404);
+          return c.json({ message: "Variable not found" }, 404);
         }
 
         const updatedVariable = await updateEnvVariable(variableId, data);
         return c.json({ data: updatedVariable }, 200);
       } catch (e) {
+        console.log(e);
         return c.json({ error: "Failed to update variable." }, 500);
       }
     },
@@ -48,6 +49,7 @@ const envVars = new Hono()
       const variables = await getEnvVariables(projectId);
       return c.json({ data: variables }, 200);
     } catch (e) {
+      console.log(e);
       return c.json({ error: "Failed to fetch variables." }, 500);
     }
   })
@@ -56,7 +58,7 @@ const envVars = new Hono()
     const variableId = parseInt(c.req.param("id"));
     const variable = await getEnvVariableById(variableId);
     if (!variable) {
-      return c.json({ error: "Variable not found" }, 404);
+      return c.json({ message: "Variable not found" }, 404);
     }
 
     return c.json({ data: variable }, 200);
@@ -74,6 +76,7 @@ const envVars = new Hono()
       await deleteEnvVariable(variableId);
       return c.json({ data: variable }, 200);
     } catch (e) {
+      console.log(e);
       return c.json({ error: "Failed to delete variable." }, 500);
     }
   });
