@@ -14,9 +14,12 @@ afterAll(async () => {
 });
 
 const runMigration = () => {
-  execSync("npm run migrate:reset -w @envyper/orm", {
-    stdio: "inherit",
-  });
+  execSync(
+    "infisical run --env=test -- npm run migrate:reset -w @envyper/orm",
+    {
+      stdio: "inherit",
+    },
+  );
 };
 
 const createTestUser = async (userId: string) => {
