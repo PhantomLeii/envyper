@@ -10,10 +10,6 @@ const hono = new Hono().basePath("/api");
 
 hono.use(etag(), logger());
 
-hono.get("/", (c) => {
-  return c.json({ message: "Port forwarding is working!" });
-});
-
 hono.route("/projects", projects);
 hono.route("/variables", envVars);
 hono.route("/webhooks", webhooks);
