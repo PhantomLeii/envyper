@@ -7,7 +7,17 @@ export type EnvType = z.infer<typeof EnvTypeSchema>;
 // Base schemas
 export const UserSchema = z.object({
   id: z.number(),
-  userId: z.string(),
+  clerkUserId: z.string(),
+  email: z.string().email(),
+  firstName: z.string().nullable(),
+  lastName: z.string().nullable(),
+  createdAt: z.date(),
+});
+
+export const TokenSchema = z.object({
+  id: z.number(),
+  token: z.string(),
+  userId: z.number(),
   createdAt: z.date(),
 });
 
@@ -36,11 +46,17 @@ export const CreateProjectSchema = ProjectSchema.omit({
   users: true,
 });
 export const CreateEnvVariableSchema = EnvVariableSchema.omit({ id: true });
+export const CreateTokenSchema = TokenSchema.omit({
+  id: true,
+  createdAt: true,
+});
 
 // Types
 export type User = z.infer<typeof UserSchema>;
+export type Token = z.infer<typeof TokenSchema>;
 export type Project = z.infer<typeof ProjectSchema>;
 export type EnvVariable = z.infer<typeof EnvVariableSchema>;
 export type CreateUser = z.infer<typeof CreateUserSchema>;
 export type CreateProject = z.infer<typeof CreateProjectSchema>;
 export type CreateEnvVariable = z.infer<typeof CreateEnvVariableSchema>;
+export type CreateToken = z.infer<typeof CreateTokenSchema>;
