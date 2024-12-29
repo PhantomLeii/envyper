@@ -1,4 +1,3 @@
-import { afterAll } from "bun:test";
 import { PrismaClient } from "@prisma/client";
 import { execSync } from "child_process";
 
@@ -7,10 +6,6 @@ const prisma = new PrismaClient();
 export const main = async (): Promise<void> => {
   console.log("Setting up test environment...");
   await createTestUser();
-
-  afterAll(async () => {
-    await prisma.$disconnect();
-  });
 };
 
 export const createTestUser = async () => {
@@ -25,6 +20,8 @@ export const createTestUser = async () => {
       email: "test@orm.com",
     },
   });
+
+  console.log("Test user created");
 };
 
-main();
+await main();

@@ -18,7 +18,6 @@ describe("Users database operations", () => {
   });
 
   afterAll(async () => {
-    await prisma.$executeRaw`TRUNCATE TABLE "User" CASCADE`;
     await prisma.$disconnect();
   });
 

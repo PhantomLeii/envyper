@@ -27,7 +27,7 @@ describe("Projects", () => {
     // get test user
     const testUser: User | null = await prisma.user.findUnique({
       where: {
-        userId: "test-user",
+        clerkUserId: "test-user",
       },
     });
 

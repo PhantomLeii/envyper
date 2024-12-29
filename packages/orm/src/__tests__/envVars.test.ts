@@ -25,7 +25,7 @@ describe("Environment Variables", () => {
   beforeAll(async () => {
     const testUser = await prisma.user.findUnique({
       where: {
-        userId: "test-user",
+        clerkUserId: "test-user",
       },
     });
 
