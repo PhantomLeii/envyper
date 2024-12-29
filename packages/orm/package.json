@@ -6,7 +6,9 @@
   "exports": {
     "./projects": "./src/projects.ts",
     "./envVars": "./src/envVars.ts",
-    "./utils": "./src/utils.ts"
+    "./utils": "./src/utils.ts",
+    "./users": "./src/users.ts",
+    "./accessTokens": "./src/accessTokens.ts"
   },
   "scripts": {
     "build": "bun build --entrypoints src/*.ts --outdir dist --target node",
