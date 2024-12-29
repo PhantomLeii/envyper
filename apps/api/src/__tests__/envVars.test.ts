@@ -22,7 +22,7 @@ describe("Environment Variable Endpoints", () => {
   beforeAll(async () => {
     const testUser = await prisma.user.findFirst({
       where: {
-        userId: "test-user",
+        clerkUserId: "test-user",
       },
     });
 

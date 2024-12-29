@@ -1,4 +1,3 @@
-import { afterAll } from "bun:test";
 import { execSync } from "child_process";
 import { PrismaClient } from "@prisma/client";
 
@@ -9,23 +8,17 @@ const main = async () => {
   await createTestUser("test-user");
 };
 
-afterAll(async () => {
-  await prisma.$disconnect();
-});
-
 const runMigration = () => {
-  execSync(
-    "infisical run --env=test -- npm run migrate:reset -w @envyper/orm",
-    {
-      stdio: "inherit",
-    },
-  );
+  execSync("npm run migrate:reset -w @envyper/orm", {
+    stdio: "inherit",
+  });
 };
 
 const createTestUser = async (userId: string) => {
   await prisma.user.create({
     data: {
-      userId,
+      clerkUserId: userId,
+      email: "testuser@email.com",
     },
   });
 
