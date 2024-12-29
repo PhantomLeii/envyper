@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 
 export const main = async (): Promise<void> => {
   console.log("Setting up test environment...");
-  console.log(`Using Test Database: ${Bun.env.DATABASE_URL}`);
   await createTestUser();
 
   afterAll(async () => {
@@ -22,7 +21,8 @@ export const createTestUser = async () => {
   // create test user
   await prisma.user.create({
     data: {
-      userId: "test-user",
+      clerkUserId: "test-user",
+      email: "test@orm.com",
     },
   });
 };
