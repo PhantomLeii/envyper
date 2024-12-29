@@ -1,9 +1,9 @@
 {
   "name": "envyper",
+  "packageManager": "bun@1.1.40",
   "private": true,
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "packageManager": "bun@1.1.40"
+  ]
 }
