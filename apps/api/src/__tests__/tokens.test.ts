@@ -1,5 +1,4 @@
 import { describe, it, expect } from "bun:test";
-import { PrismaClient } from "@prisma/client";
 import { testClient } from "hono/testing";
 import { Hono } from "hono";
 import tokens from "../routes/tokens";
@@ -12,7 +11,9 @@ describe("Tokens Endpoints", () => {
   };
 
   it("should get access token for user", async () => {
-    const res = await testClient(app).tokens.$get({ query: testData });
+    const res = await testClient(app).tokens.$get({
+      query: testData,
+    });
     const data = await res.json();
 
     if ("accessToken" in data) {
