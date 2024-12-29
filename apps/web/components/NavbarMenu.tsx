@@ -26,7 +26,7 @@ export function Component() {
 
   React.useEffect(() => {
     setPathname(router.location.pathname);
-  });
+  }, [router.location.pathname]);
 
   return (
     <Navbar
@@ -54,8 +54,7 @@ export function Component() {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <AcmeLogo />
-          <p className="font-bold text-inherit">ENVYPER</p>
+          <p className="font-extrabold text-inherit tracking-wide">ENVYPER</p>
         </NavbarBrand>
       </NavbarContent>
 
