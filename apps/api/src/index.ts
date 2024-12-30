@@ -14,6 +14,10 @@ hono.route("/projects", projects);
 hono.route("/variables", envVars);
 hono.route("/webhooks", webhooks);
 
-export const server = Bun.serve({
+const server = Bun.serve({
   fetch: hono.fetch,
 });
+
+if (process.env.NODE_ENV !== "production") {
+  console.log("Listening at", server.url.href);
+}
