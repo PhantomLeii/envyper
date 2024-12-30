@@ -12,7 +12,7 @@
       "inputs": ["$TURBO_DEFAULT$", "**/*.ts", "**/*.tsx"]
     },
     "test": {
-      "dependsOn": ["lint", "^test"],
+      "dependsOn": ["^test"],
       "inputs": [
         "$TURBO_DEFAULT$",
         ".env.test",
