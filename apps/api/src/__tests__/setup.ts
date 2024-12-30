@@ -9,7 +9,7 @@ const main = async () => {
 };
 
 const runMigration = () => {
-  execSync("npm run migrate:reset -w @envyper/orm", {
+  execSync('bun --filter "@envyper/orm" migrate:reset --force', {
     stdio: "inherit",
   });
 };
