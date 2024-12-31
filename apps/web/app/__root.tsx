@@ -14,7 +14,7 @@ declare module "@react-types/shared" {
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as string;
 if (!PUBLISHABLE_KEY) {
-  throw new Error("Missing publishable key");
+  throw new Error("Missing clerk publishable key");
 }
 
 export const Route = createRootRoute({
