@@ -1,14 +1,17 @@
 import React from "react";
 import { Inter } from "next/font/google";
+import "./globals.css";
+
 import type { Metadata } from "next";
 
 const inter = Inter({
   display: "swap",
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-inter",
 });
 
-export const meta: Metadata = {
+export const metadata: Metadata = {
   title:
     "Envyper | The best way to manage your environment variables in development",
   description:

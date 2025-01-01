@@ -1,1 +1,1 @@
-module.exports = require("@envper/tailwind-config/postcss.config");
+module.exports = require("@envyper/tailwind-config/postcss.config");
