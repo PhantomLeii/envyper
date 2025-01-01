@@ -1,3 +1,4 @@
+import React from "react";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { Button } from "@nextui-org/button";
