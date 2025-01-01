@@ -6,6 +6,7 @@ import { cors } from "hono/cors";
 import projects from "./routes/projects";
 import envVars from "./routes/envVars";
 import webhooks from "./routes/webhooks";
+import tokens from "./routes/tokens";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -23,6 +24,7 @@ app.use(
 app.route("/projects", projects);
 app.route("/variables", envVars);
 app.route("/webhooks", webhooks);
+app.route("/tokens", tokens);
 
 const server = Bun.serve({
   fetch: app.fetch,
