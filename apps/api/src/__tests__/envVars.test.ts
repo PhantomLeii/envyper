@@ -22,7 +22,7 @@ describe("Environment Variable Endpoints", () => {
   beforeAll(async () => {
     const testUser = await prisma.user.findFirst({
       where: {
-        userId: "test-user",
+        clerkUserId: "test-user",
       },
     });
 
@@ -54,7 +54,7 @@ describe("Environment Variable Endpoints", () => {
 
   it("should return all environment variables belonging to project", async () => {
     const res = await testClient(app).variables.$get({
-    query: { projectId: String(testProjectId) },
+      query: { projectId: String(testProjectId) },
     });
     const variables = await res.json();
 
@@ -105,5 +105,6 @@ describe("Environment Variable Endpoints", () => {
     });
 
     expect(deletedVariable).toBeNull();
+    expect(res.status).toBe(200);
   });
 });

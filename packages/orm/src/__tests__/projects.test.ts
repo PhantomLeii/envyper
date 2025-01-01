@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll, test } from "bun:test";
+import { describe, it, expect, beforeAll, afterAll } from "bun:test";
 import { PrismaClient } from "@prisma/client";
 import type { CreateProject, Project, User } from "@envyper/zod";
 
@@ -27,7 +27,7 @@ describe("Projects", () => {
     // get test user
     const testUser: User | null = await prisma.user.findUnique({
       where: {
-        userId: "test-user",
+        clerkUserId: "test-user",
       },
     });
 
@@ -53,7 +53,7 @@ describe("Projects", () => {
   });
 
   it("should get a project by id", async () => {
-    const existingProject = await getProjectById(1);
+    const existingProject = await getProjectById(projectId);
     expect(existingProject).toMatchObject(testProject);
   });
 

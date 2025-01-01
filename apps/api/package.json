@@ -10,12 +10,15 @@
     "test": "bun test",
     "test:watch": "bun --watch test",
     "lint": "eslint src/**/*.ts",
-    "seed": "bun src/scripts/seed.ts"
+    "seed": "bun src/scripts/seed.ts",
+    "clean": "rm -rf dist/",
+    "start": "bun dist/index.js"
   },
   "dependencies": {
     "@envyper/orm": "workspace:*",
     "@hono/zod-validator": "^0.4.2",
-    "hono": "^4.6.14"
+    "hono": "^4.6.14",
+    "svix": "^1.44.0"
   },
   "devDependencies": {
     "@envyper/eslint-config": "workspace:*",
