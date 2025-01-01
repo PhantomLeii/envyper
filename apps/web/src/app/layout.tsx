@@ -1,5 +1,6 @@
 import React from "react";
 import { Inter } from "next/font/google";
+import Providers from "@/context/Providers";
 import "./globals.css";
 
 import type { Metadata } from "next";
@@ -32,8 +33,10 @@ type RootLayoutProps = {
 
 export default function RootLayout(props: RootLayoutProps) {
   return (
-    <html lang="en">
-      <body className={`${inter.className}`}>{props.children}</body>
-    </html>
+    <Providers>
+      <html lang="en" className="dark">
+        <body className={`${inter.className}`}>{props.children}</body>
+      </html>
+    </Providers>
   );
 }
