@@ -13,9 +13,9 @@ const app = new Hono().basePath("/api");
 
 app.use(etag(), logger());
 app.use(
-  "/api/*",
+  "*",
   cors({
-    origin: [isProd ? (process.env.CLIENT_URL as string) : "*"],
+    origin: process.env.CORS_ALLOWED_ORIGINS?.split(",") as Array<string>,
     allowMethods: ["GET", "POST", "PATCH", "DELETE"],
   }),
 );
