@@ -33,10 +33,10 @@ type RootLayoutProps = {
 
 export default function RootLayout(props: RootLayoutProps) {
   return (
-    <Providers>
-      <html lang="en" className="dark">
-        <body className={`${inter.className}`}>{props.children}</body>
-      </html>
-    </Providers>
+    <html lang="en" className="dark">
+      <body className={`${inter.className}`}>
+        <Providers>{props.children}</Providers>
+      </body>
+    </html>
   );
 }
