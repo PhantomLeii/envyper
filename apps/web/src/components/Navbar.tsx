@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { usePathname } from "next/navigation";
 import {
   Navbar,
   NavbarBrand,
@@ -15,6 +16,7 @@ import {
 
 export function Component() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const pathname = usePathname();
 
   const menuItems = [
     {
@@ -41,30 +43,26 @@ export function Component() {
 
       <NavbarContent className="sm:hidden pr-3" justify="center">
         <NavbarBrand>
-          <p className="font-bold text-inherit uppercase">Envyper</p>
+          <Link href="/" className="font-bold text-inherit uppercase">
+            Envyper
+          </Link>
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarBrand>
-          <p className="font-bold text-inherit uppercase">Envyper</p>
+          <Link href="/" className="font-bold text-inherit uppercase">
+            Envyper
+          </Link>
         </NavbarBrand>
 
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link aria-current="page" href="#">
-            Customers
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
-          </Link>
-        </NavbarItem>
+        {menuItems.map((item, i) => (
+          <NavbarItem key={`${item}-${i}`} isActive={pathname === item.href}>
+            <Link color="foreground" href={item.href}>
+              {item.title}
+            </Link>
+          </NavbarItem>
+        ))}
       </NavbarContent>
 
       <NavbarContent justify="end">

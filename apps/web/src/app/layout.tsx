@@ -35,7 +35,9 @@ type RootLayoutProps = {
 export default function RootLayout(props: RootLayoutProps) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className}`}>
+      <body
+        className={`${inter.className}  selection:text-black selection:bg-white`}
+      >
         <Providers>
           <Navbar />
           <main className="container mx-auto w-full">{props.children}</main>
