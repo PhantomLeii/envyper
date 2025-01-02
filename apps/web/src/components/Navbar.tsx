@@ -2,6 +2,7 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
+import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
 import {
   Navbar,
   NavbarBrand,
@@ -12,11 +13,17 @@ import {
   NavbarItem,
   Link,
   Button,
+  Dropdown,
+  DropdownTrigger,
+  Avatar,
+  DropdownMenu,
+  DropdownItem,
 } from "@nextui-org/react";
 
 export function Component() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const pathname = usePathname();
+  const { user, signOut } = useClerk();
 
   const menuItems = [
     {
@@ -56,34 +63,87 @@ export function Component() {
           </Link>
         </NavbarBrand>
 
-        {menuItems.map((item, i) => (
-          <NavbarItem key={`${item}-${i}`} isActive={pathname === item.href}>
-            <Link color="foreground" href={item.href}>
-              {item.title}
-            </Link>
-          </NavbarItem>
-        ))}
+        <SignedOut>
+          {menuItems.map((item, i) => (
+            <NavbarItem key={`${item}-${i}`} isActive={pathname === item.href}>
+              <Link color="foreground" href={item.href}>
+                {item.title}
+              </Link>
+            </NavbarItem>
+          ))}
+        </SignedOut>
       </NavbarContent>
 
-      <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="warning" href="#" variant="flat">
-            Sign Up
-          </Button>
-        </NavbarItem>
+      <NavbarContent justify="end" as={"div"}>
+        <SignedOut>
+          <NavbarItem className="hidden lg:flex">
+            <Link href="/sign-in">Sign In</Link>
+          </NavbarItem>
+        </SignedOut>
+
+        <SignedIn>
+          <Dropdown placement="bottom-end">
+            <DropdownTrigger>
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
+                color="secondary"
+                name={`${user?.firstName} ${user?.lastName}`}
+                size="sm"
+                src={user?.imageUrl}
+              />
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Profile Actions" variant="flat">
+              <DropdownItem key="profile" className="h-14 gap-2">
+                <p className="font-semibold">Signed in as</p>
+                <p className="font-extralight">
+                  {user?.emailAddresses[0]?.emailAddress}
+                </p>
+              </DropdownItem>
+              <DropdownItem
+                key="projects"
+                as={Link}
+                href="/projects"
+                className="text-whtie"
+              >
+                Projects
+              </DropdownItem>
+              <DropdownItem
+                key="logout"
+                color="danger"
+                onPress={() => signOut()}
+              >
+                Log Out
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </SignedIn>
       </NavbarContent>
 
       <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
-            <Link href={item.href} className="text-white">
-              {item.title}
-            </Link>
-          </NavbarMenuItem>
-        ))}
+        <SignedOut>
+          {menuItems.map((item, index) => (
+            <NavbarMenuItem key={`${item}-${index}`}>
+              <Link href={item.href} className="text-white">
+                {item.title}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+        </SignedOut>
+
+        <SignedIn>
+          {menuItems.map((item, index) => (
+            <NavbarMenuItem key={`${item}-${index}`}>
+              <Link href={item.href} className="text-white">
+                {item.title}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+          <Button color="danger" onPress={() => signOut()}>
+            Sign Out
+          </Button>
+        </SignedIn>
       </NavbarMenu>
     </Navbar>
   );
