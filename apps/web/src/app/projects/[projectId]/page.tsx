@@ -2,6 +2,7 @@ import React from "react";
 import { fetchProjectById } from "@/data/fetchProjects";
 import { Button } from "@nextui-org/button";
 import { fetchVariables } from "@/data/fetchVariables";
+import DeleteProjectModal from "@/components/ui/DeleteProjectModal";
 import VariablesTable from "@/components/VariablesTable";
 
 type ProjectProps = {
@@ -14,7 +15,7 @@ export default async function Project({ params }: ProjectProps) {
   const { data: variables } = await fetchVariables(projectId);
 
   return (
-    <>
+    <div className="relative h-full">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-4xl font-bold mb-6">{project.name}</h1>
@@ -27,6 +28,9 @@ export default async function Project({ params }: ProjectProps) {
         </div>
       </div>
       <VariablesTable data={variables} />
-    </>
+      <div className="absolute bottom-0 right-0 justify-end mt-6">
+        <DeleteProjectModal projectId={projectId} />
+      </div>
+    </div>
   );
 }
