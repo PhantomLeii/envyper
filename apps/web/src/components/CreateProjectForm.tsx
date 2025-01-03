@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useAuth } from "@clerk/nextjs";
+import { revalidatePath } from "next/cache";
 import {
   Modal,
   ModalContent,
@@ -26,7 +27,7 @@ export function Component(props: ModalFormProps) {
     name: "",
     description: "",
     isLoading: false,
-    error: "",
+    error: null,
   });
 
   async function onSubmit() {
@@ -53,9 +54,15 @@ export function Component(props: ModalFormProps) {
           name: data.name,
           description: data.description,
         });
-      }
 
-      setPayload({ ...payload, isLoading: false, error: "An error occurred" });
+        revalidatePath("/");
+      } else {
+        setPayload({
+          ...payload,
+          isLoading: false,
+          error: "An error occurred",
+        });
+      }
     } catch (err) {
       console.log(err);
     }

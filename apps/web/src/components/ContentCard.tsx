@@ -20,7 +20,7 @@ export default async function ContentCard(props: ContentCardProps) {
         {props.modalForm}
       </CardHeader>
       <Divider />
-      <CardBody>{props.children}</CardBody>
+      <CardBody className="flex flex-col gap-2">{props.children}</CardBody>
     </Card>
   );
 }
