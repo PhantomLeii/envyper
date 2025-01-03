@@ -1,10 +1,8 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "@nextui-org/card";
 import { Button } from "@nextui-org/button";
-import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { Divider } from "@nextui-org/react";
-import type { Project } from "@envyper/zod";
 
 type ContentCardProps = {
   title: string;
@@ -12,19 +10,10 @@ type ContentCardProps = {
   pageUrl?: string;
   noContentMessage?: string;
   fetchHref: string;
+  children?: React.ReactNode;
 };
 
 export default async function ContentCard(props: ContentCardProps) {
-  const { getToken } = await auth();
-
-  const res = await fetch(props.fetchHref, {
-    headers: {
-      Authorization: `Bearer ${(await getToken()) as string}`,
-    },
-  });
-
-  const { data } = await res.json();
-
   return (
     <Card className={`p-4 col-span-${props.cols || 1}`}>
       <CardHeader className="flex flex-col items-start md:items-center gap-3 md:flex-row md:justify-between">
@@ -39,16 +28,7 @@ export default async function ContentCard(props: ContentCardProps) {
         </Button>
       </CardHeader>
       <Divider />
-      <CardBody>
-        {data?.map((item: Project, i: number) => (
-          <Card fullWidth className="p-4" key={`${item}-${i}`}>
-            <CardHeader>
-              <h1 className="text-2xl font-bold">{item.name}</h1>
-            </CardHeader>
-            <CardBody></CardBody>
-          </Card>
-        ))}
-      </CardBody>
+      <CardBody>{props.children}</CardBody>
     </Card>
   );
 }
