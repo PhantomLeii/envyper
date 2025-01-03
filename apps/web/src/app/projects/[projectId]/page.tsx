@@ -24,7 +24,6 @@ export default async function Project({ params }: ProjectProps) {
 
         <div className="flex flex-col gap-2">
           <Button color="primary">Add Secret</Button>
-          <Button>Edit Project</Button>
         </div>
       </div>
       <VariablesTable data={variables} />
