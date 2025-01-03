@@ -1,22 +1,24 @@
 import React from "react";
 import { fetchProjectById } from "@/data/fetchProjects";
 import { Button } from "@nextui-org/button";
+import { fetchVariables } from "@/data/fetchVariables";
+import VariablesTable from "@/components/VariablesTable";
 
 type ProjectProps = {
-  params: {
-    projectId: string;
-  };
+  params: Promise<{ projectId: string }>;
 };
 
 export default async function Project({ params }: ProjectProps) {
-  const { data } = await fetchProjectById(params.projectId);
+  const { projectId } = await params;
+  const { data: project } = await fetchProjectById(projectId);
+  const { data: variables } = await fetchVariables(projectId);
 
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-4xl font-bold mb-6">{data.name}</h1>
-          <p className="text-default-500">{data.description}</p>
+          <h1 className="text-4xl font-bold mb-6">{project.name}</h1>
+          <p className="text-default-500">{project.description}</p>
         </div>
 
         <div className="flex flex-col gap-2">
@@ -24,6 +26,7 @@ export default async function Project({ params }: ProjectProps) {
           <Button>Edit Project</Button>
         </div>
       </div>
+      <VariablesTable data={variables} />
     </>
   );
 }
