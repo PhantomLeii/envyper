@@ -1,11 +1,13 @@
 import React from "react";
 import { Button } from "@nextui-org/button";
-import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
-import Banner from "@/components/Banner";
-import ContentCard from "@/components/ContentCard";
 import { fetchProjects } from "@/data/fetchProjects";
+import { Component as CreateModalForm } from "@/components/CreateProjectForm";
+
+import ContentCard from "@/components/ContentCard";
+import Banner from "@/components/Banner";
 import ItemCard from "@/components/ui/ItemCard";
+import Link from "next/link";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL as string;
 
@@ -19,13 +21,20 @@ export default async function Index() {
       <>
         <main className="grid min-h-[calc(100vh-64px)] grid-cols-4 p-8 gap-6">
           <Banner />
-          <div className="w-full grid grid-rows-2 lg:grid-cols-2 gap-6">
+          <div className="w-full col-span-3 min-h-full gap-6">
             <ContentCard
               title="My Projects"
               cols={1}
               pageUrl="/projects"
               noContentMessage="No projects yet"
               fetchHref={`${apiUrl}/projects`}
+              modalForm={
+                <CreateModalForm
+                  openModalBtnText="Add New"
+                  title="Create New Project"
+                  submitText="Create"
+                />
+              }
             >
               {data?.map((item, i) => (
                 <ItemCard

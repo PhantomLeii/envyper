@@ -1,7 +1,5 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "@nextui-org/card";
-import { Button } from "@nextui-org/button";
-import Link from "next/link";
 import { Divider } from "@nextui-org/react";
 
 type ContentCardProps = {
@@ -11,6 +9,7 @@ type ContentCardProps = {
   noContentMessage?: string;
   fetchHref: string;
   children?: React.ReactNode;
+  modalForm: React.ReactNode;
 };
 
 export default async function ContentCard(props: ContentCardProps) {
@@ -18,14 +17,7 @@ export default async function ContentCard(props: ContentCardProps) {
     <Card className={`p-4 col-span-${props.cols || 1}`}>
       <CardHeader className="flex flex-col items-start md:items-center gap-3 md:flex-row md:justify-between">
         <h1 className="text-4xl font-bold">{props.title}</h1>
-        <Button
-          as={Link}
-          href={props.pageUrl as string}
-          color="primary"
-          className="w-full md:w-auto"
-        >
-          View
-        </Button>
+        {props.modalForm}
       </CardHeader>
       <Divider />
       <CardBody>{props.children}</CardBody>
