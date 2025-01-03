@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useAuth } from "@clerk/nextjs";
 import {
   Modal,
   ModalContent,
@@ -19,13 +20,46 @@ type ModalFormProps = {
 };
 
 export function Component(props: ModalFormProps) {
+  const { getToken } = useAuth();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [payload, setPayload] = React.useState({
     name: "",
     description: "",
+    isLoading: false,
+    error: "",
   });
 
-  async function onSubmit() {}
+  async function onSubmit() {
+    setPayload({ ...payload, isLoading: true });
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/projects`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${(await getToken()) as string}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: payload.name,
+          description: payload.description,
+        }),
+      });
+
+      if (res.ok) {
+        const { data } = await res.json();
+        setPayload({
+          ...payload,
+          isLoading: false,
+          name: data.name,
+          description: data.description,
+        });
+      }
+
+      setPayload({ ...payload, isLoading: false, error: "An error occurred" });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <>
@@ -42,6 +76,9 @@ export function Component(props: ModalFormProps) {
               </ModalHeader>
 
               <ModalBody>
+                {payload.error && (
+                  <div className="text-red-500">{payload.error}</div>
+                )}
                 <Input
                   label="Name"
                   value={payload.name}
@@ -61,7 +98,12 @@ export function Component(props: ModalFormProps) {
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Cancel
                 </Button>
-                <Button color="primary" onPress={() => onSubmit()}>
+                <Button
+                  color="primary"
+                  isLoading={payload.isLoading}
+                  isDisabled={payload.isLoading}
+                  onPress={() => onSubmit()}
+                >
                   {props.submitText}
                 </Button>
               </ModalFooter>
