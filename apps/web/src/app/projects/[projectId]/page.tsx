@@ -1,9 +1,9 @@
 import React from "react";
 import { fetchProjectById } from "@/data/fetchProjects";
-import { Button } from "@nextui-org/button";
 import { fetchVariables } from "@/data/fetchVariables";
 import DeleteProjectModal from "@/components/ui/DeleteProjectModal";
 import VariablesTable from "@/components/VariablesTable";
+import CreateVariableForm from "@/components/CreateVariableForm";
 
 type ProjectProps = {
   params: Promise<{ projectId: string }>;
@@ -23,7 +23,12 @@ export default async function Project({ params }: ProjectProps) {
         </div>
 
         <div className="flex flex-col gap-2">
-          <Button color="primary">Add Secret</Button>
+          <CreateVariableForm
+            openModalBtnText="Add Secret"
+            submitText="Add Secret"
+            title="Create New Secret"
+            projectId={projectId}
+          />
         </div>
       </div>
       <VariablesTable data={variables} />

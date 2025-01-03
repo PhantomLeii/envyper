@@ -20,7 +20,7 @@ export default function VariablesTable(props: ProjectsTableProps) {
       <TableHeader>
         <TableColumn>Key</TableColumn>
         <TableColumn>Value</TableColumn>
-        <TableColumn>Date Created</TableColumn>
+        <TableColumn>Environment</TableColumn>
       </TableHeader>
       <TableBody>
         {props.data.length > 0 ? (
@@ -29,7 +29,7 @@ export default function VariablesTable(props: ProjectsTableProps) {
               <TableRow key={`${item}-${i}`}>
                 <TableCell>{item.key}</TableCell>
                 <TableCell>{item.value}</TableCell>
-                <TableCell>{item.createAt}</TableCell>
+                <TableCell>{item.envType}</TableCell>
               </TableRow>
             ))}
           </>

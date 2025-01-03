@@ -13,7 +13,6 @@ export const fetchVariables = async (projectId: string) => {
     });
 
     const body = await res.json();
-    console.log(body);
     return body;
   } catch (e) {
     console.log(e);
