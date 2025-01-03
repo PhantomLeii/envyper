@@ -7,6 +7,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Skeleton,
 } from "@nextui-org/react";
 import Link from "next/link";
 
@@ -22,16 +23,41 @@ export default function ProjectsTable(props: ProjectsTableProps) {
         <TableColumn>Description</TableColumn>
       </TableHeader>
       <TableBody>
-        <>
-          {props.data.map((item, i) => (
-            <TableRow key={`${item}-${i}`}>
+        {props.data ? (
+          <>
+            {props.data.map((item, i) => (
+              <TableRow key={`${item}-${i}`}>
+                <TableCell>
+                  <Link href={`/projects/${item.id}`}>{item.name}</Link>
+                </TableCell>
+                <TableCell>{item.description}</TableCell>
+              </TableRow>
+            ))}
+          </>
+        ) : (
+          <>
+            <TableRow>
               <TableCell>
-                <Link href={`/projects/${item.id}`}>{item.name}</Link>
+                <Skeleton className="w-full" />
               </TableCell>
-              <TableCell>{item.description}</TableCell>
+              <TableCell>
+                <Skeleton className="w-full" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="w-full" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="w-full" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="w-full" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="w-full" />
+              </TableCell>
             </TableRow>
-          ))}
-        </>
+          </>
+        )}
       </TableBody>
     </Table>
   );

@@ -3,6 +3,8 @@ import { auth } from "@clerk/nextjs/server";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL as string;
 
 export const fetchProjects = async () => {
+  let isLoading = true;
+
   const { getToken } = await auth();
 
   try {
@@ -12,14 +14,21 @@ export const fetchProjects = async () => {
       },
     });
 
-    const body = await res.json();
-    return body;
+    const { data } = await res.json();
+    isLoading = false;
+
+    return {
+      data,
+      isLoading,
+    };
   } catch (e) {
     console.log(e);
   }
 };
 
 export const fetchProjectById = async (projectId: string) => {
+  let isLoading = true;
+
   const { getToken } = await auth();
 
   try {
@@ -29,8 +38,13 @@ export const fetchProjectById = async (projectId: string) => {
       },
     });
 
-    const body = await res.json();
-    return body;
+    const { data } = await res.json();
+    isLoading = false;
+
+    return {
+      data,
+      isLoading,
+    };
   } catch (e) {
     console.log(e);
   }
