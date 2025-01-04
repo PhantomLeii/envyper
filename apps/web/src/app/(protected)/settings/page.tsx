@@ -26,7 +26,7 @@ export default function Settings() {
       </div>
 
       <Card fullWidth className="p-4">
-        <CardBody className="flex flex-row justify-start items-center">
+        <CardBody className="flex flex-row justify-start items-center gap-4">
           <TokenInput />
         </CardBody>
       </Card>

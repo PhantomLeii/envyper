@@ -2,7 +2,9 @@
 
 import React from "react";
 import { Input } from "@nextui-org/react";
+import { Button } from "@nextui-org/button";
 import { useAuth } from "@clerk/nextjs";
+import { revalidatePath } from "next/cache";
 
 export const EyeSlashFilledIcon = (props: any) => {
   return (
@@ -100,33 +102,75 @@ export default function TokenInput() {
     fetchToken();
   }, []);
 
+  async function handleRefresh() {
+    setPayload({ ...payload, isLoading: true });
+
+    const accessToken = await getToken();
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/tokens/refresh`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (res.status !== 200) {
+        setPayload({
+          ...payload,
+          error: "An error occurred while refreshing your token.",
+          isLoading: false,
+        });
+      }
+
+      const { data } = await res.json();
+      setPayload({ ...payload, token: data.token, isLoading: false });
+      revalidatePath("/settings");
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   return (
-    <Input
-      fullWidth
-      size="lg"
-      className="flex items-center"
-      endContent={
-        <button
-          aria-label="toggle password visibility"
-          className="focus:outline-none"
-          type="button"
-          onClick={toggleVisibility}
-        >
-          {isVisible ? (
-            <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-          ) : (
-            <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-          )}
-        </button>
-      }
-      label="Your Client ID"
-      type={isVisible ? "text" : "password"}
-      variant="bordered"
-      value={payload.token || "NONE"}
-      isDisabled={payload.isLoading}
-      errorMessage={payload.error}
-    />
+    <>
+      <Input
+        fullWidth
+        size="lg"
+        className="flex items-center"
+        endContent={
+          <button
+            aria-label="toggle password visibility"
+            className="focus:outline-none"
+            type="button"
+            onClick={toggleVisibility}
+          >
+            {isVisible ? (
+              <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+            ) : (
+              <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+            )}
+          </button>
+        }
+        label="Your Client ID"
+        type={isVisible ? "text" : "password"}
+        variant="bordered"
+        value={payload.token || "NONE"}
+        errorMessage={payload.error}
+      />
+
+      <Button
+        color="primary"
+        onPress={() => handleRefresh()}
+        isLoading={payload.isLoading}
+        isDisabled={payload.isLoading}
+      >
+        Refresh
+      </Button>
+    </>
   );
 }
