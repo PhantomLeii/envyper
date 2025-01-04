@@ -64,7 +64,7 @@ export const EyeFilledIcon = (props: any) => {
   );
 };
 
-export default function VaraibleInput() {
+export default function TokenInput() {
   const [isVisible, setIsVisible] = React.useState(false);
   const { getToken } = useAuth();
   const [payload, setPayload] = React.useState({

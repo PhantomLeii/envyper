@@ -1,7 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Card, CardBody } from "@nextui-org/card";
-import VaraibleInput from "@/components/ui/VariableInput";
+import TokenInput from "@/components/ui/TokenInput";
 
 export const metadata: Metadata = {
   title: "Settings | Envyper - Manage Your Account",
@@ -27,7 +27,7 @@ export default function Settings() {
 
       <Card fullWidth className="p-4">
         <CardBody className="flex flex-row justify-start items-center">
-          <VaraibleInput />
+          <TokenInput />
         </CardBody>
       </Card>
     </>
