@@ -1,0 +1,20 @@
+{
+  "name": "@envyper/api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "bun src/index.ts",
+    "build": "bun build src/index.ts --outdir dist --target node",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@envyper/bun": "*",
+    "@prisma/client": "^6.2.1",
+    "hono": "^4.6.16",
+    "prisma": "^6.2.1"
+  },
+  "devDependencies": {
+    "@envyper/typescript-config": "*",
+    "@envyper/zod": "*"
+  }
+}
