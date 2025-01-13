@@ -1,0 +1,12 @@
+{
+  "name": "envyper",
+  "version": "1.0.0",
+  "license": "ISC",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3"
+  }
+}

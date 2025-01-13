@@ -7,7 +7,7 @@
 node_modules
 .pnp
 .pnp.js
-bun.lockb
+package-lock.json
 
 # Local env files
 .env*
