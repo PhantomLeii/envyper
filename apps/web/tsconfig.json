@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@envyper/typescript-config/base.json",
+  "compilerOptions": {
+    "types": ["react", "react-dom"],
+    "jsxFactory": "React.createElement",
+    "jsx": "react-jsx"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
+}
