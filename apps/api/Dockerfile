@@ -1,24 +1,31 @@
-FROM node:18-slim AS base
-RUN npm install -g npm@10.8.2
+FROM oven/bun:1.1.40-alpine AS bun
+FROM node:18-alpine AS node
 
-FROM base AS prune
+
+FROM node AS prune
 WORKDIR /app
+RUN apk update && apk add --no-cache libc6-compat
 RUN npm install -g turbo@2.3.3
+
 COPY . .
 RUN turbo prune @envyper/api --docker
 
-FROM base AS build
+
+FROM node AS build
 WORKDIR /app
+RUN corepack enable pnpm && corepack prepare pnpm@9.15.2
 COPY --from=prune /app/out/json/ .
-RUN npm ci
+RUN pnpm install
 
 COPY --from=prune /app/out/full/ .
-RUN npx turbo run build
+RUN pnpx turbo build
 
-FROM base AS run
+
+FROM bun AS runner
 WORKDIR /app
-COPY --from=build /app/out/full/dist/ .
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/apps/api/dist/ .
 
 EXPOSE 3000
 
-CMD ["node", "index.js"]
+CMD [ "bun", "index.js" ]
