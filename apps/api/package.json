@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "bun src/index.ts",
+    "dev": "bun --watch src/index.ts",
     "build": "bun build src/index.ts --outdir dist --target node",
     "test": "bun test"
   },
@@ -16,5 +16,6 @@
   "devDependencies": {
     "@envyper/typescript-config": "*",
     "@envyper/zod": "*"
-  }
+  },
+  "packageManager": "npm@10.8.2"
 }
