@@ -8,14 +8,13 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@envyper/bun": "*",
+    "@envyper/bun": "workspace:*",
     "@prisma/client": "^6.2.1",
     "hono": "^4.6.16",
     "prisma": "^6.2.1"
   },
   "devDependencies": {
-    "@envyper/typescript-config": "*",
-    "@envyper/zod": "*"
-  },
-  "packageManager": "npm@10.8.2"
+    "@envyper/typescript-config": "workspace:*",
+    "@envyper/zod": "workspace:*"
+  }
 }

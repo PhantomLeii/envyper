@@ -6,10 +6,10 @@
     "build": "bun build src/*.ts --outdir dist --target node"
   },
   "dependencies": {
-    "@envyper/bun": "*",
+    "@envyper/bun": "workspace:*",
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@envyper/typescript-config": "*"
+    "@envyper/typescript-config": "workspace:*"
   }
 }
