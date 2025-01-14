@@ -3,22 +3,25 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "echo 'Add dev script here'",
-    "build": "echo 'Add build script here'",
-    "test": "echo 'Add test script here'",
-    "lint": "echo 'Add lint script here'"
+    "dev": "vite",
+    "build": "vite build"
   },
   "dependencies": {
+    "@tanstack/react-router": "^1.95.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@envyper/typescript-config": "workspace:*",
     "@envyper/zod": "workspace:*",
+    "@tanstack/router-plugin": "^1.95.6",
     "@types/node": "^22.10.6",
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react-swc": "^3.7.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17",
     "vite": "^6.0.7"
   }
 }
