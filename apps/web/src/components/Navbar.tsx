@@ -10,7 +10,10 @@ import {
   Link,
   Button,
 } from "@nextui-org/react";
+import { Avatar } from "@nextui-org/avatar";
 import type { FileRoutesByFullPath } from "@/routeTree.gen";
+import { useClerk } from "@clerk/clerk-react";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 
 type MenuItem = {
   title: string;
@@ -19,6 +22,7 @@ type MenuItem = {
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { user } = useClerk();
   let menuItems: MenuItem[];
 
   menuItems = [
@@ -32,7 +36,7 @@ export default function App() {
     },
   ];
 
-  if (true) {
+  if (user) {
     menuItems = [
       ...menuItems,
       {
@@ -67,15 +71,22 @@ export default function App() {
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="/sign-in">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="primary" href="/sign-up" variant="flat">
-            Sign Up
-          </Button>
-        </NavbarItem>
+        <SignedIn>
+          <Avatar src={} alt="User" />
+        </SignedIn>
+
+        <SignedOut>
+          <NavbarItem className="hidden lg:flex">
+            <Link href="/sign-in">Login</Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Button as={Link} color="primary" href="/sign-up" variant="flat">
+              Sign Up
+            </Button>
+          </NavbarItem>
+        </SignedOut>
       </NavbarContent>
+
       <NavbarMenu>
         {menuItems.map((item, i) => (
           <NavbarMenuItem key={`${item.href}-${i}`}>
