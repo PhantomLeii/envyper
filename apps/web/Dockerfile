@@ -1,5 +1,8 @@
 FROM node:18-alpine AS base
 
+ARG VITE_CLERK_PUBLISHABLE_KEY=pk_test_dsfd # This is a test key
+ARG VITE_CLERK_SECRET_KEY=sk_test_fdksfjk   # This is a test key
+
 RUN apk update && apk add --no-cache libc6-compat && \
   corepack enable pnpm && \
   corepack prepare pnpm@9.15.2 && \
@@ -25,6 +28,9 @@ RUN pnpx turbo build
 
 FROM nginx:alpine AS runner
 COPY --from=build /app/apps/web/dist /usr/share/nginx/html
+
+ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY \
+    VITE_CLERK_SECRET_KEY=$VITE_CLERK_SECRET_KEY
 
 EXPOSE 80
 

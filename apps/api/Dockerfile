@@ -1,5 +1,7 @@
 FROM node:18-alpine AS base
 
+ARGS VITE_CLERK_PUBLISHABLE_KEY=pk_test_dsfd
+ARGS VITE_CLERK_SECRET_KEY=sk_test_fdksfjk
 
 FROM base AS prune
 WORKDIR /app
@@ -24,6 +26,9 @@ FROM oven/bun:1.1.40-alpine AS runner
 WORKDIR /app
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/apps/api/dist/ .
+
+ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY \
+    VITE_CLERK_SECRET_KEY=$VITE_CLERK_SECRET_KEY
 
 EXPOSE 3000
 
