@@ -9,6 +9,10 @@ import {
   NavbarMenuItem,
   Link,
   Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from "@nextui-org/react";
 import { Avatar } from "@nextui-org/avatar";
 import type { FileRoutesByFullPath } from "@/routeTree.gen";
@@ -22,7 +26,7 @@ type MenuItem = {
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const { user } = useClerk();
+  const { user, signOut } = useClerk();
   let menuItems: MenuItem[];
 
   menuItems = [
@@ -70,12 +74,8 @@ export default function App() {
         ))}
       </NavbarContent>
 
-      <NavbarContent justify="end">
-        <SignedIn>
-          <Avatar src={} alt="User" />
-        </SignedIn>
-
-        <SignedOut>
+      <SignedOut>
+        <NavbarContent justify="end">
           <NavbarItem className="hidden lg:flex">
             <Link href="/sign-in">Login</Link>
           </NavbarItem>
@@ -84,8 +84,41 @@ export default function App() {
               Sign Up
             </Button>
           </NavbarItem>
-        </SignedOut>
-      </NavbarContent>
+        </NavbarContent>
+      </SignedOut>
+
+      <SignedIn>
+        <NavbarContent as="div" justify="end">
+          <Dropdown placement="bottom-end">
+            <DropdownTrigger>
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
+                color="secondary"
+                name={user?.fullName as string}
+                size="sm"
+                src={user?.imageUrl}
+              />
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Profile Actions" variant="flat">
+              <DropdownItem key="profile" className="h-14 gap-2">
+                <p className="font-semibold">Signed in as</p>
+                <p className="font-semibold">{user?.fullName}</p>
+              </DropdownItem>
+              <DropdownItem key="projects">My Projects</DropdownItem>
+              <DropdownItem key="settings">Settings</DropdownItem>
+              <DropdownItem
+                key="logout"
+                color="danger"
+                onPress={() => signOut()}
+              >
+                Log Out
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </NavbarContent>
+      </SignedIn>
 
       <NavbarMenu>
         {menuItems.map((item, i) => (
