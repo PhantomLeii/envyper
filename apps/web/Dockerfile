@@ -1,20 +1,18 @@
 FROM node:18-alpine AS base
 
-ARG VITE_CLERK_PUBLISHABLE_KEY=pk_test_dsfd # This is a test key
-ARG VITE_CLERK_SECRET_KEY=sk_test_fdksfjk   # This is a test key
+ARG VITE_CLERK_PUBLISHABLE_KEY
+ARG VITE_CLERK_SECRET_KEY
 
 RUN apk update && apk add --no-cache libc6-compat && \
-  corepack enable pnpm && \
-  corepack prepare pnpm@9.15.2 && \
-  npm i -g bun@1.1.40
-
+    corepack enable pnpm && \
+    corepack prepare pnpm@9.15.2 && \
+    npm i -g bun@1.1.40
 
 FROM base AS prune
 WORKDIR /app
-
 RUN npm i -g turbo@2.3.3
-COPY . .
 
+COPY . .
 RUN turbo prune @envyper/web --docker
 
 
@@ -34,4 +32,4 @@ ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY \
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD [ "nginx", "-g", "daemon off;" ]
