@@ -46,7 +46,7 @@ jobs:
             DATABASE_URL=${{ secrets.DATABASE_URL }}
 
       - name: Build Web Docker Image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: apps/web/Dockerfile
