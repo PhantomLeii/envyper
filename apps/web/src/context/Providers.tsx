@@ -18,13 +18,15 @@ export default function Providers(props: ProviderProps) {
   const router = useRouter();
 
   return (
-    <AuthProvider>
-      <HeroUIProvider
-        navigate={(to, options) => router.navigate({ to, ...options })}
-        useHref={(to) => router.buildLocation({ to }).href}
-      >
-        {props.children}
-      </HeroUIProvider>
-    </AuthProvider>
+    <>
+      <AuthProvider>
+        <HeroUIProvider
+          navigate={(to, options) => router.navigate({ to, ...options })}
+          useHref={(to) => router.buildLocation({ to }).href}
+        >
+          {props.children}
+        </HeroUIProvider>
+      </AuthProvider>
+    </>
   );
 }
