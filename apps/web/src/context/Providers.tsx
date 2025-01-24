@@ -1,6 +1,7 @@
 import { HeroUIProvider } from "@heroui/react";
 import type { NavigateOptions, ToOptions } from "@tanstack/react-router";
 import { useRouter } from "@tanstack/react-router";
+import { AuthProvider } from "./Authentication";
 
 declare module "@react-types/shared" {
   interface RouterConfig {
@@ -17,11 +18,15 @@ export default function Providers(props: ProviderProps) {
   const router = useRouter();
 
   return (
-    <HeroUIProvider
-      navigate={(to, options) => router.navigate({ to, ...options })}
-      useHref={(to) => router.buildLocation({ to }).href}
-    >
-      {props.children}
-    </HeroUIProvider>
+    <>
+      <AuthProvider>
+        <HeroUIProvider
+          navigate={(to, options) => router.navigate({ to, ...options })}
+          useHref={(to) => router.buildLocation({ to }).href}
+        >
+          {props.children}
+        </HeroUIProvider>
+      </AuthProvider>
+    </>
   );
 }
