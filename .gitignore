@@ -67,3 +67,6 @@ htmlcov/
 # Production build
 build/
 dist/
+
+# Turbo
+.turbo/
