@@ -8,9 +8,11 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <Providers>
-      <Navbar />
-      <Outlet />
-    </Providers>
+    <>
+      <Providers>
+        <Navbar />
+        <Outlet />
+      </Providers>
+    </>
   );
 }

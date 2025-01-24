@@ -11,13 +11,48 @@
 // Import Routes
 
 import { Route as rootRoute } from './pages/__root'
+import { Route as DocsImport } from './pages/docs'
+import { Route as AboutImport } from './pages/about'
 import { Route as IndexImport } from './pages/index'
+import { Route as AuthIndexImport } from './pages/auth/index'
+import { Route as appProjectsIndexImport } from './pages/(app)/projects/index'
+import { Route as appProjectsProjectIdImport } from './pages/(app)/projects/$projectId'
 
 // Create/Update Routes
+
+const DocsRoute = DocsImport.update({
+  id: '/docs',
+  path: '/docs',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AboutRoute = AboutImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthIndexRoute = AuthIndexImport.update({
+  id: '/auth/',
+  path: '/auth/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const appProjectsIndexRoute = appProjectsIndexImport.update({
+  id: '/(app)/projects/',
+  path: '/projects/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const appProjectsProjectIdRoute = appProjectsProjectIdImport.update({
+  id: '/(app)/projects/$projectId',
+  path: '/projects/$projectId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -32,6 +67,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutImport
+      parentRoute: typeof rootRoute
+    }
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/': {
+      id: '/auth/'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/(app)/projects/$projectId': {
+      id: '/(app)/projects/$projectId'
+      path: '/projects/$projectId'
+      fullPath: '/projects/$projectId'
+      preLoaderRoute: typeof appProjectsProjectIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/(app)/projects/': {
+      id: '/(app)/projects/'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof appProjectsIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +109,70 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/docs': typeof DocsRoute
+  '/auth': typeof AuthIndexRoute
+  '/projects/$projectId': typeof appProjectsProjectIdRoute
+  '/projects': typeof appProjectsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/docs': typeof DocsRoute
+  '/auth': typeof AuthIndexRoute
+  '/projects/$projectId': typeof appProjectsProjectIdRoute
+  '/projects': typeof appProjectsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/docs': typeof DocsRoute
+  '/auth/': typeof AuthIndexRoute
+  '/(app)/projects/$projectId': typeof appProjectsProjectIdRoute
+  '/(app)/projects/': typeof appProjectsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/docs'
+    | '/auth'
+    | '/projects/$projectId'
+    | '/projects'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/about' | '/docs' | '/auth' | '/projects/$projectId' | '/projects'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/docs'
+    | '/auth/'
+    | '/(app)/projects/$projectId'
+    | '/(app)/projects/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  DocsRoute: typeof DocsRoute
+  AuthIndexRoute: typeof AuthIndexRoute
+  appProjectsProjectIdRoute: typeof appProjectsProjectIdRoute
+  appProjectsIndexRoute: typeof appProjectsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  DocsRoute: DocsRoute,
+  AuthIndexRoute: AuthIndexRoute,
+  appProjectsProjectIdRoute: appProjectsProjectIdRoute,
+  appProjectsIndexRoute: appProjectsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +185,31 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/about",
+        "/docs",
+        "/auth/",
+        "/(app)/projects/$projectId",
+        "/(app)/projects/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/about": {
+      "filePath": "about.tsx"
+    },
+    "/docs": {
+      "filePath": "docs.tsx"
+    },
+    "/auth/": {
+      "filePath": "auth/index.tsx"
+    },
+    "/(app)/projects/$projectId": {
+      "filePath": "(app)/projects/$projectId.tsx"
+    },
+    "/(app)/projects/": {
+      "filePath": "(app)/projects/index.tsx"
     }
   }
 }
