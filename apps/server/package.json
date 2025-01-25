@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "echo 'Add dev script here'",
-    "build": "echo 'Add build script here'",
-    "test": "echo 'Add test script here'",
-    "lint": "echo 'Add lint script here'"
+    "dev": "python3 manage.py runserver",
+    "start": "gunicorn --bind=0.0.0.0:8000 core.wsgi",
+    "test": "python3 manage.py test",
+    "migrate:make": "python3 manage.py makemigrations",
+    "migrate": "python3 manage.py migrate"
   }
 }
