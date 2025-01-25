@@ -1,7 +1,7 @@
 {
   "name": "envyper",
   "version": "1.0.0",
-  "license": "ISC",
+  "license": "MIT",
   "private": true,
   "devDependencies": {
     "eslint": "^9.18.0",
