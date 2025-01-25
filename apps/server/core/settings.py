@@ -33,6 +33,8 @@ DEBUG = bool(int(os.getenv('DJANGO_DEBUG')))
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS').split(',')
 
+AUTH_USER_MODEL = 'users.CustomUser'
+
 
 # Application definition
 
@@ -51,7 +53,8 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-
+    'projects',
+    'users',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
