@@ -1,1 +1,1 @@
-# `server`
+# `@envyper/server`
