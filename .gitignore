@@ -28,7 +28,7 @@ env/
 venv/
 ENV/
 .env.local
-env.conf
+*env.conf
 db.sqlite3
 media/
 staticfiles/
