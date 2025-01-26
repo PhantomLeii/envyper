@@ -10,174 +10,202 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./pages/__root";
-import { Route as DocsImport } from "./pages/docs";
-import { Route as AboutImport } from "./pages/about";
-import { Route as IndexImport } from "./pages/index";
-import { Route as AuthIndexImport } from "./pages/auth/index";
-import { Route as appProjectsIndexImport } from "./pages/(app)/projects/index";
-import { Route as appProjectsProjectIdImport } from "./pages/(app)/projects/$projectId";
+import { Route as rootRoute } from './pages/__root'
+import { Route as DocsImport } from './pages/docs'
+import { Route as AboutImport } from './pages/about'
+import { Route as IndexImport } from './pages/index'
+import { Route as AuthIndexImport } from './pages/auth/index'
+import { Route as appDashboardImport } from './pages/(app)/dashboard'
+import { Route as appProjectsIndexImport } from './pages/(app)/projects/index'
+import { Route as appProjectsProjectIdImport } from './pages/(app)/projects/$projectId'
 
 // Create/Update Routes
 
 const DocsRoute = DocsImport.update({
-  id: "/docs",
-  path: "/docs",
+  id: '/docs',
+  path: '/docs',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const AboutRoute = AboutImport.update({
-  id: "/about",
-  path: "/about",
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const IndexRoute = IndexImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const AuthIndexRoute = AuthIndexImport.update({
-  id: "/auth/",
-  path: "/auth/",
+  id: '/auth/',
+  path: '/auth/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
+
+const appDashboardRoute = appDashboardImport.update({
+  id: '/(app)/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const appProjectsIndexRoute = appProjectsIndexImport.update({
-  id: "/(app)/projects/",
-  path: "/projects/",
+  id: '/(app)/projects/',
+  path: '/projects/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const appProjectsProjectIdRoute = appProjectsProjectIdImport.update({
-  id: "/(app)/projects/$projectId",
-  path: "/projects/$projectId",
+  id: '/(app)/projects/$projectId',
+  path: '/projects/$projectId',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/about": {
-      id: "/about";
-      path: "/about";
-      fullPath: "/about";
-      preLoaderRoute: typeof AboutImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/docs": {
-      id: "/docs";
-      path: "/docs";
-      fullPath: "/docs";
-      preLoaderRoute: typeof DocsImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/auth/": {
-      id: "/auth/";
-      path: "/auth";
-      fullPath: "/auth";
-      preLoaderRoute: typeof AuthIndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/(app)/projects/$projectId": {
-      id: "/(app)/projects/$projectId";
-      path: "/projects/$projectId";
-      fullPath: "/projects/$projectId";
-      preLoaderRoute: typeof appProjectsProjectIdImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/(app)/projects/": {
-      id: "/(app)/projects/";
-      path: "/projects";
-      fullPath: "/projects";
-      preLoaderRoute: typeof appProjectsIndexImport;
-      parentRoute: typeof rootRoute;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutImport
+      parentRoute: typeof rootRoute
+    }
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsImport
+      parentRoute: typeof rootRoute
+    }
+    '/(app)/dashboard': {
+      id: '/(app)/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof appDashboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/': {
+      id: '/auth/'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/(app)/projects/$projectId': {
+      id: '/(app)/projects/$projectId'
+      path: '/projects/$projectId'
+      fullPath: '/projects/$projectId'
+      preLoaderRoute: typeof appProjectsProjectIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/(app)/projects/': {
+      id: '/(app)/projects/'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof appProjectsIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/docs": typeof DocsRoute;
-  "/auth": typeof AuthIndexRoute;
-  "/projects/$projectId": typeof appProjectsProjectIdRoute;
-  "/projects": typeof appProjectsIndexRoute;
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/docs': typeof DocsRoute
+  '/dashboard': typeof appDashboardRoute
+  '/auth': typeof AuthIndexRoute
+  '/projects/$projectId': typeof appProjectsProjectIdRoute
+  '/projects': typeof appProjectsIndexRoute
 }
 
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/docs": typeof DocsRoute;
-  "/auth": typeof AuthIndexRoute;
-  "/projects/$projectId": typeof appProjectsProjectIdRoute;
-  "/projects": typeof appProjectsIndexRoute;
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/docs': typeof DocsRoute
+  '/dashboard': typeof appDashboardRoute
+  '/auth': typeof AuthIndexRoute
+  '/projects/$projectId': typeof appProjectsProjectIdRoute
+  '/projects': typeof appProjectsIndexRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/docs": typeof DocsRoute;
-  "/auth/": typeof AuthIndexRoute;
-  "/(app)/projects/$projectId": typeof appProjectsProjectIdRoute;
-  "/(app)/projects/": typeof appProjectsIndexRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/docs': typeof DocsRoute
+  '/(app)/dashboard': typeof appDashboardRoute
+  '/auth/': typeof AuthIndexRoute
+  '/(app)/projects/$projectId': typeof appProjectsProjectIdRoute
+  '/(app)/projects/': typeof appProjectsIndexRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/about"
-    | "/docs"
-    | "/auth"
-    | "/projects/$projectId"
-    | "/projects";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/about" | "/docs" | "/auth" | "/projects/$projectId" | "/projects";
+    | '/'
+    | '/about'
+    | '/docs'
+    | '/dashboard'
+    | '/auth'
+    | '/projects/$projectId'
+    | '/projects'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/about'
+    | '/docs'
+    | '/dashboard'
+    | '/auth'
+    | '/projects/$projectId'
+    | '/projects'
   id:
-    | "__root__"
-    | "/"
-    | "/about"
-    | "/docs"
-    | "/auth/"
-    | "/(app)/projects/$projectId"
-    | "/(app)/projects/";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/docs'
+    | '/(app)/dashboard'
+    | '/auth/'
+    | '/(app)/projects/$projectId'
+    | '/(app)/projects/'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  AboutRoute: typeof AboutRoute;
-  DocsRoute: typeof DocsRoute;
-  AuthIndexRoute: typeof AuthIndexRoute;
-  appProjectsProjectIdRoute: typeof appProjectsProjectIdRoute;
-  appProjectsIndexRoute: typeof appProjectsIndexRoute;
+  IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  DocsRoute: typeof DocsRoute
+  appDashboardRoute: typeof appDashboardRoute
+  AuthIndexRoute: typeof AuthIndexRoute
+  appProjectsProjectIdRoute: typeof appProjectsProjectIdRoute
+  appProjectsIndexRoute: typeof appProjectsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   DocsRoute: DocsRoute,
+  appDashboardRoute: appDashboardRoute,
   AuthIndexRoute: AuthIndexRoute,
   appProjectsProjectIdRoute: appProjectsProjectIdRoute,
   appProjectsIndexRoute: appProjectsIndexRoute,
-};
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
@@ -188,6 +216,7 @@ export const routeTree = rootRoute
         "/",
         "/about",
         "/docs",
+        "/(app)/dashboard",
         "/auth/",
         "/(app)/projects/$projectId",
         "/(app)/projects/"
@@ -201,6 +230,9 @@ export const routeTree = rootRoute
     },
     "/docs": {
       "filePath": "docs.tsx"
+    },
+    "/(app)/dashboard": {
+      "filePath": "(app)/dashboard.tsx"
     },
     "/auth/": {
       "filePath": "auth/index.tsx"
