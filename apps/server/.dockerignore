@@ -1,0 +1,55 @@
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+static/
+
+# Development/IDE
+.git
+.gitignore
+.idea
+.vscode
+*.swp
+*.swo
+.DS_Store
+.coverage
+htmlcov/
+
+# Dependencies
+node_modules/
+bower_components/
+
+# Documentation
+docs/
+*.md
+README*
+
+# Tests
+tests/
+test/
+coverage/
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+
+# Temporary files
+*.bak
+*.tmp
+.cache/
