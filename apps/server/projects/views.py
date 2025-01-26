@@ -34,7 +34,6 @@ class ProjectOperationAPIView(APIView):
 
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
     
-    # TODO: Fix attributes error bug & implement update method
     def patch(self, request, project_id):
         project = Project.objects.get(id=project_id)
 
