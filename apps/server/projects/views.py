@@ -6,8 +6,6 @@ from rest_framework import status
 from .models import Project
 from .serializers import ProjectSerializer
 
-import json
-
 
 class ProjectDetailAPIView(APIView):    
     def get(self, request):
@@ -15,8 +13,12 @@ class ProjectDetailAPIView(APIView):
         return Response({"data": projects.values()}, status=status.HTTP_200_OK)
 
     def post(self, request):
-        project = Project.objects.create(creatorId='test-user')
-        return Response({"data": project.values()}, status=status.HTTP_201_CREATED)
+        serializer = ProjectSerializer(data={"creatorId": "test-user", **request.data})
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"data": serializer.data}, status=status.HTTP_201_CREATED)
+        
+        return Response({"message": 'Provided data is invalid'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProjectOperationAPIView(APIView):
