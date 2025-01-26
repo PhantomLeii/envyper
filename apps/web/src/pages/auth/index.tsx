@@ -4,7 +4,7 @@ import { Hanko, register } from "@teamhanko/hanko-elements";
 import { useRouter } from "@tanstack/react-router";
 import { useAuth } from "@/context/Authentication";
 
-const hankoApi = import.meta.env.VITE_HANKO_API_URL;
+const hankoApi = import.meta.env.VITE_HANKO_API_URL as string;
 
 export const Route = createFileRoute("/auth/")({
   component: AuthenticationForm,
@@ -16,11 +16,11 @@ function AuthenticationForm() {
 
   const { isAuthenticated } = useAuth();
   if (isAuthenticated) {
-    navigate({ to: "/" });
+    void navigate({ to: "/dashboard" });
   }
 
   const redirectAfterLogin = useCallback(() => {
-    navigate({ to: "/" });
+    void navigate({ to: "/dashboard" });
   }, [navigate]);
 
   useEffect(
