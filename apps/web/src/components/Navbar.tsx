@@ -18,7 +18,7 @@ interface MenuItem {
   href: keyof FileRoutesByFullPath;
 }
 
-export default function App() {
+export default function Component() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const { isAuthenticated } = useAuth();
 

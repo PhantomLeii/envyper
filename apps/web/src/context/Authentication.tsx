@@ -8,7 +8,7 @@ import {
 } from "react";
 
 // Initialize Hanko with your API URL
-const hanko = new Hanko(import.meta.env.VITE_HANKO_API_URL);
+const hanko = new Hanko(import.meta.env.VITE_HANKO_API_URL as string);
 
 interface AuthContextType {
   hanko: Hanko;
@@ -55,6 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line
 export function useAuth() {
   const context = useContext(AuthContext);
 
