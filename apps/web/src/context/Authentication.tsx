@@ -28,6 +28,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const session = hanko.session.get();
         setIsAuthenticated(!!session);
       } catch (error) {
+        // Send error to exception tracking service
+        console.log(error);
         setIsAuthenticated(false);
       } finally {
         setIsLoading(false);

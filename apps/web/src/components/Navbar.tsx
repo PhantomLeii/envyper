@@ -1,5 +1,6 @@
 import React from "react";
 import { FileRoutesByFullPath } from "@/routeTree.gen";
+import { useAuth } from "@/context/Authentication";
 import {
   Navbar,
   NavbarBrand,
@@ -12,13 +13,14 @@ import {
   Button,
 } from "@heroui/react";
 
-type MenuItem = {
+interface MenuItem {
   title: string;
   href: keyof FileRoutesByFullPath;
-};
+}
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { isAuthenticated } = useAuth();
 
   const menuItems: MenuItem[] = [
     {
@@ -32,10 +34,6 @@ export default function App() {
     {
       title: "Docs",
       href: "/docs",
-    },
-    {
-      title: "Projects",
-      href: "/projects",
     },
   ];
 
@@ -62,16 +60,24 @@ export default function App() {
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <NavbarItem>
-          <Button as={Link} color="primary" href="/auth" variant="flat">
-            Sign In
-          </Button>
-        </NavbarItem>
+        {isAuthenticated ? (
+          <NavbarItem>
+            <Button as={Link} color="primary" href="/dashboard" variant="flat">
+              Dashboard
+            </Button>
+          </NavbarItem>
+        ) : (
+          <NavbarItem>
+            <Button as={Link} color="primary" href="/auth" variant="flat">
+              Sign In
+            </Button>
+          </NavbarItem>
+        )}
       </NavbarContent>
 
       <NavbarMenu>
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
+          <NavbarMenuItem key={`${item.href}-${index}`}>
             <Link
               className="w-full"
               color="foreground"
