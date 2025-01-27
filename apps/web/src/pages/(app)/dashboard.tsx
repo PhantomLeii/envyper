@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Card, CardHeader, CardBody } from "@heroui/card";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -21,14 +21,14 @@ function Dashboard() {
             <p className="text-default-500">{user?.email}</p>
           </CardHeader>
           <CardBody as="div" className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="p-4 rounded-lg">
+            <Card className="p-4 rounded-lg" as={Link} href="/projects">
               <CardBody>
                 <h2 className="text-lg font-medium">Active Environments</h2>
                 <p className="text-3xl font-bold text-secondary-500 mt-2">0</p>
               </CardBody>
             </Card>
 
-            <Card className="p-4 rounded-lg">
+            <Card className="p-4 rounded-lg" as={Link} href="/projects">
               <CardBody>
                 <h2 className="text-lg font-medium">Total Projects</h2>
                 <p className="text-3xl font-bold text-secondary-600 mt-2">0</p>
