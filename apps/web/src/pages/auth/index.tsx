@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo } from "react";
 import { Hanko, register } from "@teamhanko/hanko-elements";
 import { useRouter } from "@tanstack/react-router";
-import { useAuth } from "@/context/Authentication";
+import { useAuth } from "@/hooks/useAuth";
 
 const hankoApi = import.meta.env.VITE_HANKO_API_URL as string;
 
