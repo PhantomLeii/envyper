@@ -2,7 +2,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-
 from .models import Project
 from .serializers import ProjectSerializer
 
@@ -18,6 +17,7 @@ class ProjectDetailAPIView(APIView):
             serializer.save()
             return Response({"data": serializer.data}, status=status.HTTP_201_CREATED)
         
+        print(serializer.data)
         return Response({"message": 'Provided data is invalid'}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -36,7 +36,6 @@ class ProjectOperationAPIView(APIView):
     
     def patch(self, request, project_id):
         project = Project.objects.get(id=project_id)
-
         if not project:
             return Response({'message': 'Project not found'},status=status.HTTP_404_NOT_FOUND)
 

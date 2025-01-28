@@ -33,6 +33,8 @@ DEBUG = bool(int(os.getenv('DJANGO_DEBUG')))
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS').split(',')
 
+CSRF_TRUSTED_ORIGINS = os.getenv('DJANGO_CORS_ORIGIN_WHITELIST').split(',')
+
 AUTH_USER_MODEL = 'users.CustomUser'
 
 

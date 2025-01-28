@@ -19,7 +19,7 @@ export default function Component() {
   function getEmptyState() {
     if (error) {
       console.log(error);
-      return "Could not fetch projects";
+      return "Failed fetching projects";
     }
 
     if (data === undefined || data.length === 0) {
@@ -41,7 +41,7 @@ export default function Component() {
         loadingContent={<Spinner label="Loading..." />}
         emptyContent={
           <>
-            <p className="text-danger-400">{getEmptyState()}</p>
+            <p>{getEmptyState()}</p>
           </>
         }
       >

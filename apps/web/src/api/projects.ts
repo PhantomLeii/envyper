@@ -11,11 +11,15 @@ export async function getProjectById(projectId: number): Promise<Project> {
   return await res.json();
 }
 
-export async function createProject(data: CreateProject): Promise<Project> {
-  const res = await fetch("/api/projects", {
+export async function createProject(
+  data: CreateProject,
+  csrfToken: string,
+): Promise<Project> {
+  const res = await fetch("/api/projects/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
     },
     body: JSON.stringify(data),
   });
