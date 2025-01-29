@@ -55,7 +55,6 @@ export default function Component() {
               <TableCell>{formatDate(project.created_at)}</TableCell>
               <TableCell>
                 <Link
-                  // ts-ignore
                   to={`/projects/${project.id}`}
                   className="flex justify-center gap-2 hover:text-default-600 hover:bg-default-200 rounded-md p-2"
                 >
