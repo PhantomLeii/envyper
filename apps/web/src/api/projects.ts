@@ -30,11 +30,13 @@ export async function createProject(
 export async function updateProject(
   projectId: number,
   data: Partial<CreateProject>,
+  csrfToken: string,
 ): Promise<Project> {
   const res = await fetch(`/api/projects/${projectId}/`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
     },
     body: JSON.stringify(data),
   });
@@ -42,8 +44,14 @@ export async function updateProject(
   return await res.json();
 }
 
-export async function deleteProject(projectId: number): Promise<void> {
+export async function deleteProject(
+  projectId: number,
+  csrfToken: string,
+): Promise<void> {
   await fetch(`/api/projects/${projectId}/`, {
     method: "DELETE",
+    headers: {
+      "X-CSRFToken": csrfToken,
+    },
   });
 }
