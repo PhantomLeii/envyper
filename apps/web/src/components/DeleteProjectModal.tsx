@@ -35,7 +35,11 @@ export default function Component() {
 
   return (
     <>
-      <Button onPress={onOpen} color="danger">
+      <Button
+        onPress={onOpen}
+        color="danger"
+        className="absolute bottom-[64px] left-0"
+      >
         Delete Project
       </Button>
 
