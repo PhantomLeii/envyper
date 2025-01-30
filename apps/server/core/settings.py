@@ -56,6 +56,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'projects',
+    'variables',
     'users',
 ]
 
