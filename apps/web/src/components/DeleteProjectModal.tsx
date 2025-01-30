@@ -1,5 +1,5 @@
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { useParams, useRouter } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import { deleteProject } from "@/api/projects";
 import useCSRFToken from "@/hooks/useCSRFToken";
 import {
@@ -12,16 +12,19 @@ import {
   useDisclosure,
 } from "@heroui/react";
 
-export default function Component() {
+interface DeleteProjectModalProps {
+  projectId: string;
+}
+
+export default function Component(props: DeleteProjectModalProps) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const queryClient = useQueryClient();
   const csrfToken = useCSRFToken();
-  const { projectId } = useParams({ from: "/(app)/projects/$projectId" });
   const router = useRouter();
 
   const { mutate, isPending } = useMutation({
     mutationFn: () =>
-      deleteProject(Number.parseInt(projectId), csrfToken as string),
+      deleteProject(Number.parseInt(props.projectId), csrfToken as string),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["projects"] });
       onClose();

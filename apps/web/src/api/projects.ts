@@ -8,7 +8,8 @@ export async function getProjects(): Promise<Project[]> {
 
 export async function getProjectById(projectId: number): Promise<Project> {
   const res = await fetch(`/api/projects/${projectId}/`);
-  return await res.json();
+  const body = await res.json();
+  return body.data;
 }
 
 export async function createProject(
