@@ -14,7 +14,7 @@ import {
   Input,
 } from "@heroui/react";
 
-export default function Components() {
+export default function Component() {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const queryClient = useQueryClient();
   const csrfToken = useCSRFToken();
