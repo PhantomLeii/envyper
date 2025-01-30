@@ -2,9 +2,9 @@
 
 - [x] Add projects listing functionality
 
-- [ ] Fix CSRF Token Issue
-- [ ] Add projects creation functionality
-- [ ] Add projects deletion functionality
-- [ ] Add projects update functionality
+- [x] Fix CSRF Token Issue
+- [x] Add projects creation functionality
+- [x] Add projects deletion functionality
+- [x] Add projects update functionality
 
-- [ ] Add Projects Individual page views
+- [x] Add Projects Individual page views
