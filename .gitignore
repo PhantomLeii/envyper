@@ -27,6 +27,7 @@ wheels/
 env/
 venv/
 ENV/
+!.env.example
 .env.local
 *env.conf
 db.sqlite3
