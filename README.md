@@ -46,7 +46,7 @@ Envyper is a web application that utilizes cutting-edge technologies and best pr
 - Python >= 3.10
 - A PostgreSQL database.
 
-> If you want to quickly spin up a Postgres database for just to run the project, you use [Neon Serverless Postgres](https://neon.tech)
+> If you want to quickly spin up a Postgres database for just to run the project, you can use [Neon Serverless Postgres](https://neon.tech)
 
 ### Local Development Setup
 
