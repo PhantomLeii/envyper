@@ -79,7 +79,7 @@ source .venv/bin/activate
 
 5.  Install dependencies
 
-> Given the monorepo architecture of the project, we'll use turbo (the repo's build tool) to install all the dependencies so that a single command is run and works for all packages.
+> We install turbo globally as it is recommended in the [Turborepo documentation](https://turbo.build/repo/docs/getting-started/installation) to install it in both the repository & globally to take advantage of fast workflows. You can simply run pnpm install, turbo will be installed as a dev dependency but will need to be prefixed with pnpx every time you need to use it.
 
 ```bash
 pnpm install turbo@2.3 --global
