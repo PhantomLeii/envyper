@@ -46,7 +46,7 @@ Envyper is a web application that utilizes cutting-edge technologies and best pr
 - Python >= 3.10
 - A PostgreSQL database.
 
-> In this guide, I will only be showing how to connect with a docker postgres container. If you do not have docker, you can use any other postgres server. A good one to look at could be [Neon Serverless Postgres](https://neon.tech)
+> If you want to quickly spin up a Postgres database for just to run the project, you use [Neon Serverless Postgres](https://neon.tech)
 
 ### Local Development Setup
 
@@ -89,6 +89,9 @@ pnpm install
 
 5. Prepare environment variables
 
+> Variables for the frontend will follow the guidline in this [.env](./apps/web/.env.example)<br />
+> For the backend, follow those in this [.env](./apps/server/core/.env.example)
+
 ```bash
 # Windows
 copy apps\server\core\.env.example apps\server\core\.env
@@ -125,9 +128,15 @@ python3 apps/server/manage.py createsuperuser
 pnpm dev
 ```
 
-Backend: `http://localhost:8000`
-Backend Admin Panel: `http://localhost:8000/admin`
-Web: `http://localhost:8001`
+---
+
+- Backend: `http://localhost:8000`
+- Backend Admin Panel: `http://localhost:8000/admin`
+- Web: `http://localhost:8001`
+
+## Contributing
+
+Have a look at the [CONTRIBUTING Guidline](./CONTRIBUTING.md).
 
 ## License
 
