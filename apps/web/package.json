@@ -8,8 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "format": "prettier --write .",
-    "install": "pnpm install"
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@heroui/react": "^2.6.14",

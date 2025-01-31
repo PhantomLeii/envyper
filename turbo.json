@@ -25,6 +25,9 @@
     },
     "lint": {
       "inputs": ["src/**/*.ts", "src/**/*.tsx"]
+    },
+    "install": {
+      "cache": false
     }
   }
 }
