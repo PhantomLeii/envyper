@@ -7,6 +7,7 @@
     "start": "gunicorn --bind=0.0.0.0:8000 core.wsgi",
     "test": "python3 manage.py test",
     "migrate:make": "python3 manage.py makemigrations",
-    "migrate": "python3 manage.py migrate"
+    "migrate": "python3 manage.py migrate",
+    "install": "pip install -r requirements.txt"
   }
 }
