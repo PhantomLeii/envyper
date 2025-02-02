@@ -17,7 +17,6 @@ class ProjectDetailAPIView(APIView):
             serializer.save()
             return Response({"data": serializer.data}, status=status.HTTP_201_CREATED)
         
-        print(serializer.data)
         return Response({"message": 'Provided data is invalid'}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -31,7 +30,6 @@ class ProjectOperationAPIView(APIView):
             return Response({'message': 'Project not found'},status=status.HTTP_404_NOT_FOUND)
 
         serializer = ProjectSerializer(project)
-
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
     
     def patch(self, request, project_id):
