@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "python manage.py runserver",
     "test": "python manage.py test",
-    "format": "black ."
+    "format": "black .",
+    "install": "pip install -r requirements.txt"
   }
 }

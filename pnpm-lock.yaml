@@ -21,6 +21,8 @@ importers:
         specifier: ^5.7.3
         version: 5.7.3
 
+  apps/server: {}
+
 packages:
 
   '@eslint-community/eslint-utils@4.4.1':
