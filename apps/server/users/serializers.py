@@ -23,3 +23,10 @@ class UserSerializer(serializers.ModelSerializer):
             )
 
         return attrs
+
+    def create(self, validated_data):
+        """
+        Create new user
+        """
+        user = self.Meta.model.objects.create_user(**validated_data)
+        return user
