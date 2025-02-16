@@ -9,18 +9,17 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "date_joined", "is_active")
         extra_kwargs = {"password": {"write_only": True}}
 
-    def create(self, validated_data):
+    def validate(self, attrs):
         """
-        Access Email & Password from validated data & create
-        new user or raise exception if either is missing.
+        Ensure email, password & first name are provided.
         """
-        email = validated_data.pop("email")
-        password = validated_data.pop("password")
+        email = attrs.get("email")
+        first_name = attrs.get("first_name")
+        password = attrs.get("password")
 
-        if not email or not password:
-            raise serializers.ValidationError("Email & Password are required")
+        if not email or not password or not first_name:
+            raise serializers.ValidationError(
+                "Email, Password & First Name are required"
+            )
 
-        user = self.Meta.model.objects.create(email=email, **validated_data)
-        user.set_password(password)
-        user.save()
-        return user
+        return attrs
