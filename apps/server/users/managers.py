@@ -8,7 +8,9 @@ class CustomUserManager(BaseUserManager):
         Create and return a regular user with an email and password.
         """
         if not email:
-            raise ValueError(_("The Email field must be set"))
+            raise ValueError(_("The Email field is required"))
+        if not extra_fields.get("first_name"):
+            raise ValueError(_("The first name field is required"))
 
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
