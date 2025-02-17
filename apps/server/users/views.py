@@ -9,7 +9,7 @@ from .serializers import UserSerializer
 
 class CreateUserAPIView(APIView):
     permission_classes = (AllowAny,)
-    
+
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -20,12 +20,14 @@ class CreateUserAPIView(APIView):
 
 class UserDetailAPIView(APIView):
     user_model = get_user_model()
-    
+
     def get(self, request):
         try:
             user = self.user_model.objects.get(email=request.user.email)
             serializer = UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except self.user_model.DoesNotExist:
-            return Response({"detail": "You are not authorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        
+        except AttributeError:
+            return Response(
+                {"detail": "You are not authorized"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
