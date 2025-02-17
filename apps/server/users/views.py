@@ -31,3 +31,19 @@ class UserDetailAPIView(APIView):
                 {"detail": "You are not authorized"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
+
+    def patch(self, request):
+        try:
+            user = self.user_model.objects.get(email=request.user.email)
+
+            serializer = UserSerializer(user, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except AttributeError:
+            return Response(
+                {"detail": "You are not authorized"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )

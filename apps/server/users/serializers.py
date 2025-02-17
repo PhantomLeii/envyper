@@ -30,3 +30,10 @@ class UserSerializer(serializers.ModelSerializer):
         """
         user = self.Meta.model.objects.create_user(**validated_data)
         return user
+
+    def update(self, instance, validated_data):
+        """
+        Update existing user.
+        """
+        user = self.Meta.model.objects.update(user=instance, **validated_data)
+        return user
