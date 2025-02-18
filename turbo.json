@@ -12,7 +12,7 @@
       "outputs": ["dist"]
     },
     "test": {
-      "inputs": ["$TURBO_DEFAULTS", "src", "*{spec,test}*"]
+      "inputs": ["$TURBO_DEFAULTS", "src", "*{spec,test}*", "**/tests/*.py"]
     },
     "lint": {
       "inputs": ["$TURBO_DEFAULTS", "src", "*.{ts,tsx,js,cjs,mjs,py}"]
