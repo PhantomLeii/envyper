@@ -31,9 +31,10 @@ class UserSerializer(serializers.ModelSerializer):
         user = self.Meta.model.objects.create_user(**validated_data)
         return user
 
-    def update(self, instance, validated_data):
-        """
-        Update existing user.
-        """
-        user = self.Meta.model.objects.update(user=instance, **validated_data)
-        return user
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = "__all__"
+        read_only_fields = ("id", "date_joined", "is_active", "email")
+        extra_kwargs = {"password": {"write_only": True}}
