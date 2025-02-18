@@ -2,19 +2,19 @@ from django.db import models
 
 
 class ProjectsManager(models.Manager):
-    def create(self, **kwargs):
+    def create(self, **attrs):
         """
         Ensure name and creator fields are provided before creating a project
         """
-        name = kwargs.get("name")
+        name = attrs.get("name")
         if not name:
             raise ValueError("Name is required")
 
-        creator = kwargs.get("creator")
+        creator = attrs.get("creator")
         if not creator:
             raise ValueError("Creator is required")
 
-        return super().create(**kwargs)
+        return super().create(**attrs)
 
 
 class Projects(models.Model):
