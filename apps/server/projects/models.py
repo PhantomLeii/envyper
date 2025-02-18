@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Projects(models.Model):
-    creator = models.ForeignKey("users.Users", on_delete=models.CASCADE)
+    creator = models.ForeignKey("users.User", on_delete=models.CASCADE)
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
