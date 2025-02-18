@@ -66,14 +66,35 @@ class UserDetailAPIViewTests(TestCase):
 
         self.token = response.data["access"]
 
-    def test_get_user(self):
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
-        response = self.client.get(reverse("current-user"))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["email"], self.user_data["email"])
-
     def test_unauthorized_user(self):
         response = self.client.get(reverse("current-user"))
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.assertEqual(response.data["detail"], "You are not authorized")
+
+    def test_get_user(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
+        response = self.client.get(reverse("current-user"))
+        response_data = response.data["data"]
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response_data["email"], self.user_data["email"])
+
+    def test_update_user(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
+        updated_user_data = {"last_name": "updateduser"}
+
+        response = self.client.patch(
+            reverse("current-user"), updated_user_data, format="json"
+        )
+        response_data = response.data["data"]
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response_data["last_name"], updated_user_data["last_name"])
+        self.assertEqual(response_data["email"], self.user_data["email"])
+
+    def test_delete_user(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
+        response = self.client.delete(reverse("current-user"))
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        with self.assertRaises(self.user_model.DoesNotExist):
+            self.user_model.objects.get(email=self.user_data["email"])

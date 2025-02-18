@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserDetailSerializer
 
 
 class CreateUserAPIView(APIView):
@@ -21,29 +21,44 @@ class CreateUserAPIView(APIView):
 class UserDetailAPIView(APIView):
     user_model = get_user_model()
 
-    def get(self, request):
+    def get_object(self, email):
         try:
-            user = self.user_model.objects.get(email=request.user.email)
-            serializer = UserSerializer(user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except AttributeError:
+            return self.user_model.objects.get(email=email)
+        except self.user_model.DoesNotExist:
+            return None
+
+    def get(self, request):
+        user = self.get_object(request.user.email)
+        if user is None:
             return Response(
-                {"detail": "You are not authorized"},
-                status=status.HTTP_401_UNAUTHORIZED,
+                {"detail": "User does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
             )
+
+        serializer = UserDetailSerializer(user)
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
     def patch(self, request):
-        try:
-            user = self.user_model.objects.get(email=request.user.email)
-
-            serializer = UserSerializer(user, data=request.data, partial=True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response({"data": serializer.data}, status=status.HTTP_200_OK)
-
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except AttributeError:
+        user = self.get_object(request.user.email)
+        if user is None:
             return Response(
-                {"detail": "You are not authorized"},
-                status=status.HTTP_401_UNAUTHORIZED,
+                {"detail": "User does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
             )
+
+        serializer = UserDetailSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        user = self.get_object(request.user.email)
+        if user is None:
+            return Response(
+                {"detail": "User does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
