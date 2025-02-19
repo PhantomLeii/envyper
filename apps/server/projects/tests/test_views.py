@@ -100,3 +100,12 @@ class ProjectDetailAPIViewTests(TestSetup):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response_data["name"], self.update_data["name"])
         self.assertEqual(response_data["description"], self.update_data["description"])
+
+    def test_delete_project(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
+        response = self.client.delete(
+            reverse("project-detail", kwargs={"project_id": self.test_project.id})
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Projects.objects.filter(pk=self.test_project.id).exists())
