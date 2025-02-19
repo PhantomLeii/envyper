@@ -18,12 +18,12 @@ class TestSetup(TestCase):
         }
 
         self.project = Projects.objects.create(**self.project_data)
-
+        
 
 class ProjectsModelTests(TestSetup):
     def setUp(self):
         super().setUp()
-
+        
     def test_project_creation(self):
         self.assertEqual(self.project.creator, self.test_user)
         self.assertEqual(self.project.name, self.project_data["name"])

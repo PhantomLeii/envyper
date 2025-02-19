@@ -53,6 +53,15 @@ class ProjectAPIViewTests(TestSetup):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response_data["name"], self.valid_project_data["name"])
         self.assertEqual(response_data["creator"], self.valid_project_data["creator"])
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertContains(response.data["data"], self.valid_project_data)
+        self.assertEqual(response.data["data"]["creator"], self.user.id)
+
+    def test_get_projects(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
+        response = self.client.get(reverse("projects"))
+
+        self.assertContains(response.data["data"], self.test_project)
 
 
 class ProjectDetailAPIViewTests(TestSetup):
