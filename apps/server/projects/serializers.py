@@ -39,3 +39,8 @@ class VariableSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Project is required")
 
         return attrs
+
+
+class VariableDetailSerializer(serializers.ModelSerializer):
+    class Meta(VariableSerializer.Meta):
+        read_only_fields = ("author", "project", "created_at", "updated_at")
