@@ -11,6 +11,10 @@ from ..models import Projects, Variables
 
 
 class TestSetup(TestCase):
+    @staticmethod
+    def normalize_key(key):
+        return key.strip().upper().replace(" ", "_")
+
     def setUp(self):
         user_data = {
             "first_name": "testuser",
@@ -146,12 +150,43 @@ class VariablesAPIViewTests(TestSetup):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response_data = response.data["data"]
-        normalized_key = self.valid_variable_data["key"].upper().replace(" ", "_")
+        normalized_key = self.normalize_key(self.valid_variable_data["key"])
 
-        pass
+        with self.subTest("Created project variable"):
+            self.assertEqual(response_data["key"], normalized_key)
+
+            self.assertEqual(
+                self.f.decrypt(response_data["value"].encode()).decode(),
+                self.valid_variable_data["value"],
+            )
+            self.assertEqual(response_data["project"], self.test_project.id)
+            self.assertEqual(response_data["creator"], self.user.id)
+
+
+class VariableDetailAPIViewTests(TestSetup):
+    def setUp(self):
+        super().setUp()
+
+        test_project_data = {**self.valid_project_data, "creator": self.user}
+        self.test_project = Projects.objects.create(**test_project_data)
+
+        self.valid_variable_data = {"key": "Test Key", "value": "Test Value"}
+        self.test_variable = Variables.objects.create(**self.valid_variable_data)
+
+        self.update_data = {"key": "Updated Key", "value": "Updated Value"}
 
     def test_get_variables(self):
-        pass
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
+        response = self.client.get(
+            reverse("variables", kwargs={"project_id": self.test_project.id})
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.data["data"]
+        self.assertEqual(type(response_data), ReturnList)
+        self.assertGreaterEqual(len(response_data), 1)
+        self.assertEqual(response_data[0]["key"], self.valid_variable_data["key"])
 
     def test_get_variable_by_id(self):
         pass
