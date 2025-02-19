@@ -1,4 +1,5 @@
 from django.db import models
+from cryptography.fernet import Fernet
 
 
 class ProjectsManager(models.Manager):
