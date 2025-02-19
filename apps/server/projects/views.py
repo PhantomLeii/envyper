@@ -59,3 +59,22 @@ class ProjectDetailAPIView(APIView):
 
         project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class VariablesAPIView(APIView):
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass
+
+
+class VariableDetailAPIView(APIView):
+    def get(self, request, variable_id):
+        pass
+
+    def patch(self, request, variable_id):
+        pass
+
+    def delete(self, request, variable_id):
+        pass

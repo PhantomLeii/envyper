@@ -1,11 +1,13 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.conf import settings
 from rest_framework.test import APIClient
 from rest_framework import status
 from rest_framework.utils.serializer_helpers import ReturnList
+from cryptography.fernet import Fernet
 
-from ..models import Projects
+from ..models import Projects, Variables
 
 
 class TestSetup(TestCase):
@@ -42,13 +44,13 @@ class ProjectAPIViewTests(TestSetup):
     def setUp(self):
         return super().setUp()
 
-    def test_invalid_project_data(self):
+    def test_create_with_invalid_project_data(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
         response = self.client.post(reverse("projects"), self.invalid_project_data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_create_project(self):
+    def test_create_with_valid_project_data(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
         response = self.client.post(reverse("projects"), self.valid_project_data)
 
@@ -112,3 +114,54 @@ class ProjectDetailAPIViewTests(TestSetup):
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Projects.objects.filter(pk=self.test_project.id).exists())
+
+
+class VariablesAPIViewTests(TestSetup):
+    def setUp(self):
+        super().setUp()
+        self.valid_variable_data = {"key": "Test Key", "value": "Test Value"}
+        self.invalid_variable_data = {"key": "", "value": ""}
+
+        test_project_data = {**self.valid_project_data, "creator": self.user}
+        self.test_project = Projects.objects.create(**test_project_data)
+
+        self.f = Fernet(settings.ENCRYPTION_KEY)
+
+    def test_create_with_invalid_variable_data(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
+        response = self.client.post(
+            reverse("variables", kwargs={"project_id": self.test_project.id}),
+            self.invalid_variable_data,
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_with_valid_variable_data(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
+        response = self.client.post(
+            reverse("variables", kwargs={"project_id": self.test_project.id}),
+            self.valid_variable_data,
+        )
+
+        project = Projects.objects.get(pk=self.test_project.id)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        response_data = response.data["data"]
+        normalized_key = self.valid_variable_data["key"].upper().replace(" ", "_")
+
+        self.assertEqual(response_data["key"], normalized_key)
+        self.assertTrue(Variables.check_value(response_data["value"]))
+        self.assertEqual(response_data["project"], self.test_project.id)
+
+    def test_get_variables(self):
+        pass
+
+    def test_get_variable_by_id(self):
+        pass
+
+    def test_update_variable(self):
+        pass
+
+    def test_delete_variable(self):
+        pass
