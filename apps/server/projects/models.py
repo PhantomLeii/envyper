@@ -54,10 +54,10 @@ class VaraiblesManager(models.Manager):
         encrypts the value before creating a variable
         """
         if not key or not value:
-            raise ValueError("Key and value are requiredself.__fields")
+            raise ValueError("Key and value are required fields")
 
         if not attrs.get("project") or not attrs.get("author"):
-            raise ValueError("Project and author are requiredself.__fields")
+            raise ValueError("Project and author are required fields")
 
         key = self.normalize_key(key)
         variable = self.model(key=key, **attrs)

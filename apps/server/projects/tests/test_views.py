@@ -26,7 +26,7 @@ class TestSetup(TestCase):
         self.client = APIClient()
 
         # Fernet object for encryption and decryption
-        self.f = Fernet(settings.FERNET_KEY)
+        self.f = Fernet(settings.ENCRYPTION_KEY)
 
         # authenticate the user
         response = self.client.post(
@@ -126,11 +126,18 @@ class ProjectDetailAPIViewTests(TestSetup):
 class VariablesAPIViewTests(TestSetup):
     def setUp(self):
         super().setUp()
-        self.valid_variable_data = {"key": "Test Key", "value": "Test Value"}
-        self.invalid_variable_data = {"key": "", "value": ""}
-
         test_project_data = {**self.valid_project_data, "creator": self.user}
+
         self.test_project = Projects.objects.create(**test_project_data)
+
+        self.valid_variable_data = {
+            "key": "Test Key",
+            "value": "Test Value",
+            "project": self.test_project.id,
+            "author": self.user.id,
+        }
+
+        self.invalid_variable_data = {"key": "", "value": "Test Value"}
 
     def test_create_with_invalid_variable_data(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
@@ -171,9 +178,14 @@ class VariableDetailAPIViewTests(TestSetup):
         test_project_data = {**self.valid_project_data, "creator": self.user}
         self.test_project = Projects.objects.create(**test_project_data)
 
-        self.variable_data = {"key": "Test Key", "value": "Test Value"}
-        self.test_variable = Variables.objects.create(**self.variable_data)
+        self.variable_data = {
+            "key": "Test Key",
+            "value": "Test Value",
+            "project": self.test_project,
+            "author": self.user,
+        }
 
+        self.test_variable = Variables.objects.create(**self.variable_data)
         self.update_data = {"key": "Updated Key", "value": "Updated Value"}
 
     def test_get_variables(self):
