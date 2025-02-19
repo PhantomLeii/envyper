@@ -25,6 +25,9 @@ class TestSetup(TestCase):
         self.user = get_user_model().objects.create_user(**user_data)
         self.client = APIClient()
 
+        # Fernet object for encryption and decryption
+        self.f = Fernet(settings.FERNET_KEY)
+
         # authenticate the user
         response = self.client.post(
             reverse("token-obtain-pair"),
@@ -129,8 +132,6 @@ class VariablesAPIViewTests(TestSetup):
         test_project_data = {**self.valid_project_data, "creator": self.user}
         self.test_project = Projects.objects.create(**test_project_data)
 
-        self.f = Fernet(settings.ENCRYPTION_KEY)
-
     def test_create_with_invalid_variable_data(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
         response = self.client.post(
@@ -170,8 +171,8 @@ class VariableDetailAPIViewTests(TestSetup):
         test_project_data = {**self.valid_project_data, "creator": self.user}
         self.test_project = Projects.objects.create(**test_project_data)
 
-        self.valid_variable_data = {"key": "Test Key", "value": "Test Value"}
-        self.test_variable = Variables.objects.create(**self.valid_variable_data)
+        self.variable_data = {"key": "Test Key", "value": "Test Value"}
+        self.test_variable = Variables.objects.create(**self.variable_data)
 
         self.update_data = {"key": "Updated Key", "value": "Updated Value"}
 
@@ -184,15 +185,74 @@ class VariableDetailAPIViewTests(TestSetup):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         response_data = response.data["data"]
-        self.assertEqual(type(response_data), ReturnList)
-        self.assertGreaterEqual(len(response_data), 1)
-        self.assertEqual(response_data[0]["key"], self.valid_variable_data["key"])
+        normalized_key = self.normalize_key(self.variable_data["key"])
+
+        with self.subTest("Created variable"):
+            self.assertEqual(type(response_data), ReturnList)
+            self.assertGreaterEqual(len(response_data), 1)
+            self.assertEqual(response_data[0]["key"], normalized_key)
 
     def test_get_variable_by_id(self):
-        pass
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
+        response = self.client.get(
+            reverse(
+                "variable-detail",
+                kwargs={
+                    "project_id": self.test_project.id,
+                    "variable_id": self.test_variable.id,
+                },
+            )
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.data["data"]
+        normalized_key = self.normalize_key(self.variable_data["key"])
+
+        with self.subTest("Individual variable"):
+            self.assertEqual(response_data["key"], normalized_key)
+            self.assertEqual(
+                self.f.decrypt(response_data["value"].encode()).decode(),
+                self.variable_data["value"],
+            )
+            self.assertEqual(response_data["project"], self.test_project.id)
+            self.assertEqual(response_data["creator"], self.user.id)
 
     def test_update_variable(self):
-        pass
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
+        response = self.client.patch(
+            reverse(
+                "variable-detail",
+                kwargs={
+                    "project_id": self.test_project.id,
+                    "variable_id": self.test_variable.id,
+                },
+            ),
+            self.update_data,
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.data["data"]
+        normalized_key = self.normalize_key(self.update_data["key"])
+
+        self.assertEqual(response_data["key"], normalized_key)
+        self.assertEqual(
+            self.f.decrypt(response_data["value"].encode()).decode(),
+            self.update_data["value"],
+        )
 
     def test_delete_variable(self):
-        pass
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
+        response = self.client.delete(
+            reverse(
+                "variable-detail",
+                kwargs={
+                    "project_id": self.test_project.id,
+                    "variable_id": self.test_variable.id,
+                },
+            )
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Variables.objects.filter(pk=self.test_variable.id).exists())
