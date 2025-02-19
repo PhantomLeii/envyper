@@ -41,7 +41,7 @@ class VaraiblesManager(models.Manager):
         if not key:
             raise ValueError("Key is required")
 
-        value = attrs.get("value")
+        value = attrs.pop("value")
         if not value:
             raise ValueError("Value is required")
 
@@ -51,7 +51,7 @@ class VaraiblesManager(models.Manager):
         if not attrs.get("project"):
             raise ValueError("Project is required")
 
-        return super().create(**attrs)
+        return super().create(**attrs, value=value)
 
 
 class Variables(models.Model):

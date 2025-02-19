@@ -80,3 +80,8 @@ class VariablesModelTests(TestSetup):
         variable_data = {**self.variable_data, "project": None}
         with self.assertRaises(Exception):
             Variables.objects.create(**variable_data)
+
+    def test_value_is_encrypted(self):
+        self.assertNotEqual(self.variable.value, self.variable_data["value"])
+        # implement a check_value method in the model to decrypt the value and compare it
+        # self.assertEqual(self.variable.value, self.variable_data["value"])
