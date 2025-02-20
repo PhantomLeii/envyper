@@ -1,5 +1,7 @@
+from django.conf import settings
 from rest_framework import serializers
 from .models import Projects, Variables
+from cryptography.fernet import Fernet
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -45,3 +47,12 @@ class VariableSerializer(serializers.ModelSerializer):
 class VariableDetailSerializer(serializers.ModelSerializer):
     class Meta(VariableSerializer.Meta):
         read_only_fields = ("author", "project", "created_at", "updated_at")
+
+    __f = Fernet(settings.ENCRYPTION_KEY)
+
+    def validate(self, attrs):
+        if attrs.get("key"):
+            attrs["key"] = attrs["key"].strip().upper().replace(" ", "_")
+        if attrs.get("value"):
+            attrs["value"] = self.__f.encrypt(attrs["value"].encode()).decode()
+            return super().validate(attrs)

@@ -236,7 +236,7 @@ class VariableDetailAPIViewTests(TestSetup):
                 self.variable_data["value"],
             )
             self.assertEqual(response_data["project"], self.test_project.id)
-            self.assertEqual(response_data["creator"], self.user.id)
+            self.assertEqual(response_data["author"], self.user.id)
 
     def test_update_variable(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")

@@ -89,11 +89,63 @@ class VariablesAPIView(APIView):
 
 
 class VariableDetailAPIView(APIView):
+    def get_object(self, project_id, variable_id, user_id):
+        """
+        Get variable object or return None
+        """
+        variable = None
+        project = None
+
+        try:
+            project = Projects.objects.get(pk=project_id, creator=user_id)
+            variable = Variables.objects.get(pk=variable_id, project=project)
+            return project, variable
+        except Projects.DoesNotExist:
+            return None, None
+        except Variables.DoesNotExist:
+            return project, None
+
     def get(self, request, project_id, variable_id):
-        pass
+        project, variable = self.get_object(project_id, variable_id, request.user.id)
+        if project is None:
+            return Response(
+                {"detail": "Project does not exist"}, status=status.HTTP_404_NOT_FOUND
+            )
+        if variable is None:
+            return Response(
+                {"detail": "Variable does not exist"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = VariableSerializer(variable)
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
     def patch(self, request, project_id, variable_id):
-        pass
+        project, variable = self.get_object(project_id, variable_id, request.user.id)
+        if project is None:
+            return Response(
+                {"detail": "Project does not exist"}, status=status.HTTP_404_NOT_FOUND
+            )
+        if variable_id is None:
+            return Response(
+                {"detail": "Variable does not exist"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = VariableDetailSerializer(variable, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, project_id, variable_id):
-        pass
+        project, variable = self.get_object(project_id, variable_id, request.user.id)
+        if project is None:
+            return Response(
+                {"detail": "Project does not exist"}, status=status.HTTP_404_NOT_FOUND
+            )
+        if variable is None:
+            return Response(
+                {"detail": "Variable does not exist"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        variable.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
