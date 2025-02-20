@@ -18,7 +18,8 @@ class ProjectsAPIView(APIView):
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = ProjectSerializer(data=request.data)
+        data = {**request.data, "creator": request.user.id}
+        serializer = ProjectSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response({"data": serializer.data}, status=status.HTTP_201_CREATED)
@@ -76,20 +77,12 @@ class VariablesAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, project_id):
-        project_id = request.query_params.get("project")
-        if project_id is None:
-            return Response(
-                {"detail": "Project ID is required"}, status=status.HTTP_400_BAD_REQUEST
-            )
-
         if not Projects.objects.filter(pk=project_id, creator=request.user.id).exists():
             return Response(
                 {"detail": "Project does not exist"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        variables = Variables.objects.filter(
-            author=request.user.id, project=request.query_params.get("project")
-        )
+        variables = Variables.objects.filter(author=request.user.id, project=project_id)
 
         serializer = VariableSerializer(variables, many=True)
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)

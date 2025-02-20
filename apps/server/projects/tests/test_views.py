@@ -53,13 +53,17 @@ class ProjectAPIViewTests(TestSetup):
 
     def test_create_with_invalid_project_data(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
-        response = self.client.post(reverse("projects"), self.invalid_project_data)
+        response = self.client.post(
+            reverse("projects"), self.invalid_project_data, format="json"
+        )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_with_valid_project_data(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
-        response = self.client.post(reverse("projects"), self.valid_project_data)
+        response = self.client.post(
+            reverse("projects"), self.valid_project_data, format="json"
+        )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         response_data = response.data["data"]
@@ -106,6 +110,7 @@ class ProjectDetailAPIViewTests(TestSetup):
         response = self.client.patch(
             reverse("project-detail", kwargs={"project_id": self.test_project.id}),
             self.update_data,
+            format="json",
         )
 
         response_data = response.data["data"]
@@ -132,9 +137,7 @@ class VariablesAPIViewTests(TestSetup):
 
         self.valid_variable_data = {
             "key": "Test Key",
-            "value": "Test Value",
-            "project": self.test_project.id,
-            "author": self.user.id,
+            "value": "test_value",
         }
 
         self.invalid_variable_data = {"key": "", "value": "Test Value"}
@@ -142,8 +145,12 @@ class VariablesAPIViewTests(TestSetup):
     def test_create_with_invalid_variable_data(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
         response = self.client.post(
-            reverse("variables", kwargs={"project_id": self.test_project.id}),
+            reverse(
+                "variables",
+                kwargs={"project_id": self.test_project.id},
+            ),
             self.invalid_variable_data,
+            format="json",
         )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -153,6 +160,7 @@ class VariablesAPIViewTests(TestSetup):
         response = self.client.post(
             reverse("variables", kwargs={"project_id": self.test_project.id}),
             self.valid_variable_data,
+            format="json",
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -168,7 +176,7 @@ class VariablesAPIViewTests(TestSetup):
                 self.valid_variable_data["value"],
             )
             self.assertEqual(response_data["project"], self.test_project.id)
-            self.assertEqual(response_data["creator"], self.user.id)
+            self.assertEqual(response_data["author"], self.user.id)
 
 
 class VariableDetailAPIViewTests(TestSetup):
@@ -241,6 +249,7 @@ class VariableDetailAPIViewTests(TestSetup):
                 },
             ),
             self.update_data,
+            format="json",
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)

@@ -29,14 +29,15 @@ class VariableSerializer(serializers.ModelSerializer):
         read_only_fields = ("created_at", "updated_at")
 
     def validate(self, attrs):
-        if not attrs.get("key"):
-            raise serializers.ValidationError("Key is required")
-        if not attrs.get("value"):
-            raise serializers.ValidationError("Value is required")
-        if not attrs.get("author"):
-            raise serializers.ValidationError("Author is required")
-        if not attrs.get("project"):
-            raise serializers.ValidationError("Project is required")
+        if (
+            not attrs.get("key")
+            or not attrs.get("value")
+            or not attrs.get("author")
+            or not attrs.get("project")
+        ):
+            raise serializers.ValidationError(
+                "Key, Value, Author and Project are required"
+            )
 
         return attrs
 
