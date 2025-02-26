@@ -90,9 +90,7 @@ WSGI_APPLICATION = "core.wsgi.application"
 if os.getenv("GITHUB_WORKFLOW"):
     DATABASES = {
         "default": dj_database_url.config(
-            default=os.getenv(
-                "DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/testdb"
-            ),
+            default="postgresql://postgres:postgres@localhost:5432/testdb",
             conn_max_age=600,
             conn_health_checks=True,
         )
