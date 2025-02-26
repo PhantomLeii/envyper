@@ -1,0 +1,79 @@
+name: Server CI/CD Workflow
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    env:
+      DEBUG: 0
+      # Test Database
+      DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
+      SECRET_KEY: ${{ secrets.TEST_SECRET_KEY }}
+      ALLOWED_HOSTS: ${{ secrets.TEST_ALLOWED_HOSTS }}
+      CORS_ALLOWED_ORIGINS: ${{ secrets.TEST_CORS_ALLOWED_ORIGINS }}
+      ENCRYPTION_KEY: ${{ secrets.TEST_ENCRYPTION_KEY }}
+      JWT_SIGNING_KEY: ${{ secrets.TEST_JWT_SIGNING_KEY }}
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Cache Depencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+          cache: "pip"
+
+      - name: Activate Virtual Environment
+        run: |
+          python -m venv env
+          source env/bin/activate
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install Dependencies
+        run: |
+          pnpm add -g turbo
+          pnpm --filter="@envyper/server" install
+
+      - name: Run Migrations
+        run: |
+          pnpm --filter="@envyper/server" migrate
+
+      - name: Run Tests
+        run: |
+          turbo run test --filter="@envyper/server" --affected
