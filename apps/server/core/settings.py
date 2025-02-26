@@ -21,15 +21,17 @@ AUTH_USER_MODEL = "users.User"
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY", "sk-django-secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.getenv("DEBUG", 0)))
 
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS").split(",")
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:3000").split(
+    ","
+)
 
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 
@@ -88,7 +90,9 @@ WSGI_APPLICATION = "core.wsgi.application"
 if os.getenv("GITHUB_WORKFLOW"):
     DATABASES = {
         "default": dj_database_url.config(
-            default="postgresql://postgres:postgres@localhost:5432/github-actions",
+            default=os.getenv(
+                "DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/testdb"
+            ),
             conn_max_age=600,
             conn_health_checks=True,
         )
@@ -148,12 +152,12 @@ REST_FRAMEWORK = {
 }
 
 
-ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY")
+ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY", "ek-django-encryption-key")
 if not ENCRYPTION_KEY:
     raise ValueError("An ENCRYPTION_KEY is required")
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "UPDATE_LAST_LOGIN": True,
-    "SIGNING_KEY": os.getenv("JWT_SIGNING_KEY"),
+    "SIGNING_KEY": os.getenv("JWT_SIGNING_KEY", "sk-django-jwt-signing-key"),
 }
