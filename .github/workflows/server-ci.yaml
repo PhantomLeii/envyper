@@ -55,7 +55,6 @@ jobs:
 
       - name: Run Tests
         run: |
-          turbo run migrate --filter={./apps/server/**/migrations/*.py}[HEAD^1]
           turbo run test --filter=@envyper/server...[HEAD^1]
         env:
           DEBUG: 0
