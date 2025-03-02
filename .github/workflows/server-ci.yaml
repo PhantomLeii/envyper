@@ -63,5 +63,5 @@ jobs:
       - name: Run Tests
         run: |
           source env/bin/activate
-          turbo run install --filter=@envyper/server
-          turbo run test --filter=@envyper/server
+          pnpm --filter=@envyper/server install
+          pnpm --filter=@envyper/server test
