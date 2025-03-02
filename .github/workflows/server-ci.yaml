@@ -59,9 +59,9 @@ jobs:
       - name: Install Dependencies
         run: |
           pnpm add -g turbo
-          turbo run install --filter=@envyper/server
 
       - name: Run Tests
         run: |
           source env/bin/activate
+          turbo run install --filter=@envyper/server
           turbo run test --filter=@envyper/server
