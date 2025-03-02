@@ -55,7 +55,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          turbo run test --filter=@envyper/server...[HEAD^1]
+          turbo run test --filter=@envyper/server
         env:
           DEBUG: 0
           DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
