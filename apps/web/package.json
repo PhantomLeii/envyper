@@ -1,0 +1,11 @@
+{
+  "name": "@envyper/web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "test": "jest .",
+    "lint": "eslint ."
+  }
+}
