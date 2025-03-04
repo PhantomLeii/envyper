@@ -1,5 +1,6 @@
 import React from "react";
 import { Roboto } from "next/font/google";
+import Providers from "../context/Providers";
 import "./globals.scss";
 
 export const roboto = Roboto({
@@ -13,9 +14,11 @@ interface RootLayoutProps {
 
 const RootLayout = (props: RootLayoutProps) => {
   return (
-    <html lang="en">
-      <body className={`${roboto.className}`}>{props.children}</body>
-    </html>
+    <Providers>
+      <html lang="en" className="dark">
+        <body className={`${roboto.className}`}>{props.children}</body>
+      </html>
+    </Providers>
   );
 };
 
