@@ -1,4 +1,11 @@
 import React from "react";
+import { Roboto } from "next/font/google";
+import "./globals.scss";
+
+export const roboto = Roboto({
+  display: "swap",
+  subsets: ["latin"],
+});
 
 interface RootLayoutProps {
   children: Readonly<React.ReactNode>;
@@ -7,7 +14,7 @@ interface RootLayoutProps {
 const RootLayout = (props: RootLayoutProps) => {
   return (
     <html lang="en">
-      <body>{props.children}</body>
+      <body className={`${roboto.className}`}>{props.children}</body>
     </html>
   );
 };
