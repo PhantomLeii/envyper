@@ -36,14 +36,14 @@ const Component = () => {
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
+          className="lg:hidden"
         />
         <NavbarBrand>
           <p className="font-bold text-inherit">ACME</p>
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+      <NavbarContent className="hidden lg:flex gap-4" justify="center">
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.href}-${index}`}>
             <Link href={item.href} color="foreground">
@@ -55,10 +55,10 @@ const Component = () => {
 
       <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
+          <Link href="/sign-in">Login</Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
+          <Button as={Link} color="primary" href="/sign-up" variant="flat">
             Sign Up
           </Button>
         </NavbarItem>
