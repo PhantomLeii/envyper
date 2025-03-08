@@ -13,7 +13,7 @@ const SignInForm = () => {
           Welcome to Envyper
         </h1>
         <p className="text-xl tracking-tight w-full md:text-center">
-          Sign in to your account
+          Register a new account
         </p>
       </CardHeader>
 
@@ -43,8 +43,12 @@ const SignInForm = () => {
             />
           </div>
 
-          <Button color="primary" onPress={() => console.log("Sign in")}>
-            Sign In
+          <Button
+            color="primary"
+            onPress={() => console.log("Sign in")}
+            className="mt-8"
+          >
+            Sign in
           </Button>
         </form>
       </CardBody>
