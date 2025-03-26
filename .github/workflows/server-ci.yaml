@@ -46,3 +46,21 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Run tests
+        run: pnpm test
+        env:
+          DATABASE_URL: postgres://testuser:test658user@localhost:5432/envyper_test_db
+          DEBUG: 0
+          ALLOWED_HOSTS: localhost,127.0.0.1
+          SECRET_KEY: secret-key
+          ENCRYPTION_KEY: encryption-key
+          JWT_SIGNING_KEY: jwt-signing-key
+          CORS_ALLOWED_ORIGINS: http://localhost:3000
+
+      - name: Run migrations
+        run: python3 app/server/manage.py migrate
+        env:
+          DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
+          ALLOWED_HOSTS: ${{ secret.SECRET_KEY }}
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
